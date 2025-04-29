@@ -17,8 +17,9 @@ async function authentication(req, res, next) {
       throw { name: "Unauthorized", message: "Unauthorized Error" };
     }
 
-    const result = verifyToken(tokenValue);
-    const user = await User.findByPk(result.id);
+    const payload = verifyToken(tokenValue);
+    const userId = payload.id && typeof payload.id === 'object' ? payload.id.id : payload.id;
+    const user = await User.findByPk(userId);
 
     if (!user) {
       throw { name: "Unauthorized", message: "Unauthorized Error" };
