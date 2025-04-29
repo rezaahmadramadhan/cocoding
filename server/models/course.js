@@ -160,9 +160,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Course.beforeCreate((course) => {
-    course.code = `${course.title
-      .toLowerCase()
-      .slice(0, 5)}_${course.startDate.replace(/-/g, "")}`;
+    // Convert date to string in format YYYYMMDD
+    const dateStr = course.startDate instanceof Date ? 
+      course.startDate.toISOString().split('T')[0].replace(/-/g, "") : 
+      "00000000";
+    
+    course.code = `${course.title.toLowerCase().slice(0, 5)}_${dateStr}`;
   });
   return Course;
 };
