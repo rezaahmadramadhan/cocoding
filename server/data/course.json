@@ -1,0 +1,28 @@
+[
+    {
+      "title": "Introduction to APIs Development",
+      "code": "codio-begin-eng",
+      "instructor": "Codio",
+      "rating": 4.6,
+      "rating_count": 178,
+      "enrollment_count": 9500,
+      "description": "Learn how to develop APIs from scratch using best practices. Understand the importance of APIs in software development.",
+      "skills": [
+        "API Development",
+        "RESTful APIs",
+        "Software Engineering",
+        "Backend Development"
+      ],
+      "level": "Beginner",
+      "language": "English",
+      "duration_weeks": 4,
+      "estimated_effort_hours_per_week": 4,
+      "categories": [
+        "Software Development",
+        "Computer Science",
+        "Information Technology"
+      ],
+      "thumbnail_url": "https://d3njjcbhbojbot.cloudfront.net/web/images/coursera-social.png",
+      "price": "Free"
+    }
+  ]
