@@ -1,0 +1,38 @@
+[
+  {
+    "catName": "Web Development",
+    "progLang": "JavaScript"
+  },
+  {
+    "catName": "Mobile Development",
+    "progLang": "Java"
+  },
+  {
+    "catName": "Data Science",
+    "progLang": "Python"
+  },
+  {
+    "catName": "Game Development",
+    "progLang": "C#"
+  },
+  {
+    "catName": "Cloud Computing",
+    "progLang": "Java"
+  },
+  {
+    "catName": "Cybersecurity",
+    "progLang": "Python"
+  },
+  {
+    "catName": "Artificial Intelligence",
+    "progLang": "Python"
+  },
+  {
+    "catName": "DevOps",
+    "progLang": "Bash"
+  },
+  {
+    "catName": "Internet of Things",
+    "progLang": "C"
+  }
+]
