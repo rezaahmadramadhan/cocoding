@@ -29,25 +29,10 @@ module.exports = (sequelize, DataTypes) => {
           },
           notEmpty: {
             msg: "Rating cannot be empty",
-          },
-          isFloat: {
-            msg: "Rating must be a float",
-          },
-          min: {
-            args: 0,
-            msg: "Rating must be a positive number",
-          },
+          }
         },
       },
-      desc: {
-        type: DataTypes.TEXT,
-        validate: {
-          len: {
-            args: [0, 500],
-            msg: "Description cannot exceed 500 characters",
-          },
-        },
-      },
+      desc: DataTypes.TEXT,
       CourseId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -59,13 +44,10 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         validate: {
           notNull: {
-            msg: "CourseId is required",
+            msg: "Course ID is required",
           },
           notEmpty: {
-            msg: "CourseId cannot be empty",
-          },
-          isInt: {
-            msg: "CourseId must be an integer",
+            msg: "Course ID cannot be empty",
           },
         },
       },

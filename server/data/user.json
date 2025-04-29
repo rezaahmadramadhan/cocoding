@@ -1,0 +1,20 @@
+[
+  {
+    "email": "admin@gmail.com",
+    "password": "admin",
+    "fullName": "John Doe",
+    "age": 30,
+    "address": "123 Main St, Springfield, USA",
+    "phone": "+1-555-1234",
+    "about": "Software developer with 10 years of experience in web development."
+  },
+  {
+    "email": "staff@gmail.com",
+    "password": "rahasia",
+    "fullName": "Jane Smith",
+    "age": 28,
+    "address": "456 Elm St, Springfield, USA",
+    "phone": "+1-555-5678",
+    "about": "Graphic designer and illustrator."
+  }
+]

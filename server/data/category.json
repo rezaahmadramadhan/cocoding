@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Web Development",
+    "prog_lang": "JavaScript"
+  },
+  {
+    "name": "Mobile Development",
+    "prog_lang": "Java"
+  },
+  {
+    "name": "Data Science",
+    "prog_lang": "Python"
+  },
+  {
+    "name": "Game Development",
+    "prog_lang": "C#"
+  },
+  {
+    "name": "Cloud Computing",
+    "prog_lang": "Java"
+  },
+  {
+    "name": "Cybersecurity",
+    "prog_lang": "Python"
+  },
+  {
+    "name": "Artificial Intelligence",
+    "prog_lang": "Python"
+  },
+  {
+    "name": "DevOps",
+    "prog_lang": "Bash"
+  },
+  {
+    "name": "Internet of Things",
+    "prog_lang": "C"
+  }
+]

@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Category.init(
     {
-      cat_name: {
+      catName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      prog_lang: {
+      progLang: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

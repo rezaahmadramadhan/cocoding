@@ -4,8 +4,14 @@ module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
     static associate(models) {
       Course.belongsTo(models.Category);
-      Course.hasMany(models.Cart);
+      Course.hasMany(models.OrderDetail);
       Course.hasMany(models.Review);
+    }
+    get priceInRupiah() {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(this.price);
     }
   }
   Course.init(
@@ -35,10 +41,6 @@ module.exports = (sequelize, DataTypes) => {
           isInt: {
             msg: "Price must be an integer",
           },
-          min: {
-            args: 0,
-            msg: "Price must be a positive number",
-          },
         },
       },
       rating: {
@@ -54,13 +56,9 @@ module.exports = (sequelize, DataTypes) => {
           isFloat: {
             msg: "Rating must be a float",
           },
-          min: {
-            args: 0,
-            msg: "Rating must be a positive number",
-          },
         },
       },
-      total_enrollment: {
+      totalEnrollment: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -73,22 +71,36 @@ module.exports = (sequelize, DataTypes) => {
           isInt: {
             msg: "Total enrollment must be an integer",
           },
-          min: {
-            args: 0,
-            msg: "Total enrollment must be a positive number",
+        },
+      },
+      startDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Start date is required",
+          },
+          notEmpty: {
+            msg: "Start date cannot be empty",
+          },
+          isDate: {
+            msg: "Start date must be a valid date",
           },
         },
       },
       desc: {
         type: DataTypes.TEXT,
+        allowNull: false,
         validate: {
-          len: {
-            args: [0, 1000],
-            msg: "Description cannot exceed 1000 characters",
+          notNull: {
+            msg: "Description is required",
+          },
+          notEmpty: {
+            msg: "Description cannot be empty",
           },
         },
       },
-      course_img: {
+      courseImg: {
         type: DataTypes.STRING,
         validate: {
           isUrl: {
@@ -96,22 +108,18 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      duration_hours: {
+      durationHours: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Duration hours is required",
+            msg: "Duration in hours is required",
           },
           notEmpty: {
-            msg: "Duration hours cannot be empty",
+            msg: "Duration in hours cannot be empty",
           },
           isInt: {
-            msg: "Duration hours must be an integer",
-          },
-          min: {
-            args: 0,
-            msg: "Duration hours must be a positive number",
+            msg: "Duration in hours must be an integer",
           },
         },
       },
@@ -143,13 +151,6 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: {
             msg: "Category ID cannot be empty",
           },
-          isInt: {
-            msg: "Category ID must be an integer",
-          },
-          min: {
-            args: 1,
-            msg: "Category ID must be a positive number",
-          },
         },
       },
     },
@@ -158,5 +159,10 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Course",
     }
   );
+  Course.beforeCreate((course) => {
+    course.code = `${course.title
+      .toLowerCase()
+      .slice(0, 5)}_${course.startDate.replace(/-/g, "")}`;
+  });
   return Course;
 };

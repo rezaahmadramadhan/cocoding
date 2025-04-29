@@ -1,13 +1,13 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Cart extends Model {
+  class OrderDetail extends Model {
     static associate(models) {
-      Cart.belongsTo(models.Profile);
-      Cart.belongsTo(models.Course);
+      OrderDetail.belongsTo(models.Order);
+      OrderDetail.belongsTo(models.Course);
     }
   }
-  Cart.init(
+  OrderDetail.init(
     {
       quantity: {
         type: DataTypes.INTEGER,
@@ -39,30 +39,21 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      total_price: {
+      OrderId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Total price is required",
-          },
-          notEmpty: {
-            msg: "Total price cannot be empty",
-          },
-          isInt: {
-            msg: "Total price must be an integer",
-          },
+        references: {
+          model: "Orders",
+          key: "id",
         },
-      },
-      status: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         validate: {
           notNull: {
-            msg: "Status is required",
+            msg: "Order ID is required",
           },
           notEmpty: {
-            msg: "Status cannot be empty",
+            msg: "Order ID cannot be empty",
           },
         },
       },
@@ -82,37 +73,13 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: {
             msg: "Course ID cannot be empty",
           },
-          isInt: {
-            msg: "Course ID must be an integer",
-          },
-        },
-      },
-      ProfileId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Profiles",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-        validate: {
-          notNull: {
-            msg: "Profile ID is required",
-          },
-          notEmpty: {
-            msg: "Profile ID cannot be empty",
-          },
-          isInt: {
-            msg: "Profile ID must be an integer",
-          },
         },
       },
     },
     {
       sequelize,
-      modelName: "Cart",
+      modelName: "OrderDetail",
     }
   );
-  return Cart;
+  return OrderDetail;
 };

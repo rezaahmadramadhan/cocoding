@@ -11,16 +11,28 @@ module.exports = {
       },
       email: {
         allowNull: false,
-        unique:true,
+        unique: true,
         type: Sequelize.STRING
       },
       password: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      role: {
-        defaultValue: "Staff",
+      fullName: {
+        allowNull: false,
         type: Sequelize.STRING
+      },
+      age: {
+        type: Sequelize.INTEGER
+      },
+      address: {
+        type: Sequelize.TEXT
+      },
+      phone: {
+        type: Sequelize.STRING
+      },
+      about: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
