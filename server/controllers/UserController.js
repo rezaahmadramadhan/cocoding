@@ -52,6 +52,25 @@ class UserController {
       next(error);
     }
   }
+
+  static async deleteAccount(req, res, next) {
+    try {
+      const userId = req.user.id;
+      
+      const user = await User.findByPk(userId);
+      if (!user) {
+        throw { name: "NotFound", message: "User not found" };
+      }
+      
+      await User.destroy({
+        where: { id: userId }
+      });
+      
+      res.status(200).json({ message: "Your account has been successfully deleted" });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = UserController;
