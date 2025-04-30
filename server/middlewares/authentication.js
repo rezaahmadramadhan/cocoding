@@ -3,29 +3,30 @@ const { User } = require("../models");
 
 async function authentication(req, res, next) {
   try {
-    const { authorization } = req.headers;
+    const { authorization } = req.headers
 
-    if (!authorization) {
-      throw { name: "Unauthorized", message: "Invalid token" };
-    }
+        if (!authorization) {
+            throw { name: "Unauthorized", message: "Invalid Token" }
+        }
 
-    const rawToken = authorization.split(" ");
-    const tokenType = rawToken[0];
-    const tokenValue = rawToken[1];
+        const rawToken = authorization.split(" ")
+        const tokenType = rawToken[0]
+        const tokenValue = rawToken[1]
 
-    if (tokenType !== "Bearer" || !tokenValue) {
-      throw { name: "Unauthorized", message: "Unauthorized Error" };
-    }
+        if (tokenType !== "Bearer" || !tokenValue) {
+            throw { name: "Unauthorized", message: "Unauthorized Error" }
+        }
 
-    const payload = verifyToken(tokenValue);
-    const userId = payload.id && typeof payload.id === 'object' ? payload.id.id : payload.id;
-    const user = await User.findByPk(userId);
+        const result = verifyToken(tokenValue)
+        console.log(result, "<<< result");
+        
+        const user = await User.findByPk(result.id)
 
-    if (!user) {
-      throw { name: "Unauthorized", message: "Unauthorized Error" };
-    }
-
-    req.user = { id: user.id };
+        if (!user) {
+            throw { name: "Unauthorized", message: "Unauthorized Error" }
+        }
+        
+        req.user = {id: user.id}
     next();
   } catch (error) {
     next(error);
