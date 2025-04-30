@@ -5,6 +5,6 @@ const router = express.Router();
 router.use('/', require('./auth'));
 router.use('/courses', require('./courses'));
 router.use('/orders', authentication, require('./orders'));
-router.use('/gemini', authentication, require('./gemini'));
+router.use('/gemini', require('./gemini'));
 
 module.exports = router;
