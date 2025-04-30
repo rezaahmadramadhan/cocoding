@@ -19,6 +19,13 @@ const ParallaxHero = () => {
     opacity: [0.5, 1],
     easing: 'easeInQuad',
   });
+  
+  const scrollToCourses = () => {
+    const coursesSection = document.getElementById('courses-section');
+    if (coursesSection) {
+      coursesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="hero-container">
@@ -29,7 +36,7 @@ const ParallaxHero = () => {
       <div className="hero-content" ref={textParallax.ref}>
         <h1>CoCoding</h1>
         <p>Unlock Your Coding Potential</p>
-        <button className="cta-button">Explore Courses</button>
+        <button className="cta-button" onClick={scrollToCourses}>Explore Courses</button>
       </div>
     </div>
   );
