@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParallax } from "react-scroll-parallax";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import "../styles/Login.css";
 
@@ -11,6 +11,20 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [clientId, setClientId] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get return URL and message from navigation state if available
+  const returnUrl = location.state?.returnUrl || "/";
+  const message = location.state?.message || null;
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      // User is already logged in, redirect to home page
+      navigate("/");
+    }
+  }, [navigate]);
 
   // Get client ID for debugging purposes
   useEffect(() => {
@@ -23,7 +37,12 @@ const Login = () => {
       clientIdLength: googleClientId?.length || 0,
       origin: window.location.origin
     });
-  }, []);
+    
+    // Set error message from navigation state if available
+    if (message) {
+      setError(message);
+    }
+  }, [message]);
 
   // Parallax effects for different elements
   const bgParallax = useParallax({
@@ -62,15 +81,15 @@ const Login = () => {
 
       const data = await response.json();
 
-      // Store token if returned from API
+      // Store token with consistent naming
       if (data.access_token) {
-        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("userId", data.id);
         localStorage.setItem("userEmail", data.email);
       }
 
-      // Redirect to home page or dashboard
-      navigate("/");
+      // Redirect to return URL (course page) or default to home page
+      navigate(returnUrl);
     } catch (err) {
       setError(err.message || "An error occurred during login");
       console.error("Login error:", err);
@@ -102,13 +121,13 @@ const Login = () => {
 
       const data = await response.json();
 
-      // Store user information
-      localStorage.setItem("token", data.access_token);
+      // Store user information with consistent naming
+      localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("userId", data.id);
       localStorage.setItem("userEmail", data.email);
 
-      // Redirect to home page
-      navigate("/");
+      // Redirect to return URL or home page
+      navigate(returnUrl);
     } catch (err) {
       setError(err.message || "An error occurred during Google login");
       console.error("Google login error:", err);
@@ -160,6 +179,7 @@ const Login = () => {
         </div>
 
         <div className="login-form-container" ref={formParallax.ref}>
+          {message && <div className="login-message">{message}</div>}
           <form className="login-form" onSubmit={handleSubmit}>
             <h2>Login</h2>
 

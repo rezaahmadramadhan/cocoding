@@ -39,30 +39,21 @@ const CourseDetail = () => {
     try {
       setIsLoading(true);
       
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/orders/checkout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-        },
-        body: JSON.stringify({
-          courseId: id
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to process checkout');
+      // Check if user is logged in
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        // Redirect to login page if no token exists
+        navigate('/login', { 
+          state: { 
+            returnUrl: `/course/${id}`, 
+            message: 'Anda harus login terlebih dahulu untuk mendaftar kursus ini' 
+          } 
+        });
+        return;
       }
       
-      // Redirect to Midtrans payment page
-      if (data.payment && data.payment.redirectUrl) {
-        window.location.href = data.payment.redirectUrl;
-      } else {
-        // Fallback if no redirect URL is provided
-        navigate('/payment', { state: { orderId: data.order.id } });
-      }
+      // Proceed to payment page directly - our ProtectedRoute will handle the auth check
+      navigate('/payment', { state: { courseId: id } });
       
     } catch (error) {
       console.error('Checkout error:', error);

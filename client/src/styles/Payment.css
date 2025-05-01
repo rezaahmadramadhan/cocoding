@@ -1,0 +1,102 @@
+.payment-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.payment-status-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.payment-status-icon {
+  font-size: 48px;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+  color: white;
+}
+
+.payment-status-icon.success {
+  background-color: #4CAF50;
+}
+
+.payment-status-icon.pending {
+  background-color: #FFC107;
+}
+
+.payment-status-icon.failed {
+  background-color: #F44336;
+}
+
+.order-details {
+  margin: 25px 0;
+  text-align: left;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.payment-actions {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.complete-payment-button, 
+.back-home-button {
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.complete-payment-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.complete-payment-button:hover {
+  background-color: #388e3c;
+}
+
+.back-home-button {
+  background-color: transparent;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.back-home-button:hover {
+  background-color: #f5f5f5;
+}
+
+.payment-loading, 
+.payment-error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  text-align: center;
+}
+
+.payment-error h2 {
+  color: #F44336;
+  margin-bottom: 10px;
+}
