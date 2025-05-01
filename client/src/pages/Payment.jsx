@@ -14,7 +14,7 @@ const Payment = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const orderId = location.state?.orderId;
-  const courseId = location.state?.courseId;
+  const CourseId = location.state?.CourseId;
 
   // Format date function to handle different date formats
   const formatDate = (dateString) => {
@@ -119,16 +119,22 @@ const Payment = () => {
       // Enable auto-refresh for pending orders
       setAutoRefresh(true);
     } 
-    // Jika kita memiliki courseId, kita perlu membuat checkout baru
-    else if (courseId) {
+    // Jika kita memiliki CourseId, kita perlu membuat checkout baru
+    else if (CourseId) {
       createCheckout();
     }
-    // Jika tidak ada keduanya, tampilkan error
+    // Jika tidak ada keduanya, redirect ke halaman courses
     else {
       setError('No order ID or course ID provided');
       setIsLoading(false);
+      // Automatically redirect to courses page after 3 seconds
+      const redirectTimer = setTimeout(() => {
+        navigate('/');
+      }, 10000);
+      
+      return () => clearTimeout(redirectTimer);
     }
-  }, [orderId, courseId, fetchOrderStatus]);
+  }, [orderId, CourseId, fetchOrderStatus, navigate]);
 
   // Fungsi untuk membuat checkout baru
   const createCheckout = async () => {
@@ -137,7 +143,7 @@ const Payment = () => {
       if (!token) {
         navigate('/login', { 
           state: { 
-            returnUrl: `/course/${courseId}`, 
+            returnUrl: `/course/${CourseId}`, 
             message: 'Anda harus login terlebih dahulu untuk mendaftar kursus ini' 
           } 
         });
@@ -145,6 +151,10 @@ const Payment = () => {
       }
 
       setIsLoading(true);
+      console.log('Starting checkout for course ID:', CourseId);
+      
+      const checkoutPayload = { CourseId: CourseId };
+      console.log('Checkout payload:', checkoutPayload);
       
       const response = await fetch(`https://ip.dhronz.space/orders/checkout`, {
         method: 'POST',
@@ -152,24 +162,33 @@ const Payment = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({
-          courseId: courseId
-        })
+        body: JSON.stringify(checkoutPayload)
       });
       
       let data;
+      let responseText;
+      
       try {
-        // Try to parse JSON response - may fail for severe server errors
-        data = await response.json();
+        responseText = await response.text();
+        console.log('Raw server response:', responseText);
+        
+        try {
+          // Attempt to parse as JSON
+          data = JSON.parse(responseText);
+          console.log('Parsed server response:', data);
+        } catch (jsonError) {
+          console.error('Failed to parse response as JSON:', jsonError);
+          throw new Error(`Server returned invalid JSON: ${responseText.substring(0, 100)}...`);
+        }
       } catch (parseError) {
-        console.error('Failed to parse server response:', parseError);
+        console.error('Failed to get response text:', parseError);
         
         // Collect diagnostic information
         const diagnosticData = {
           statusCode: response.status,
           statusText: response.statusText,
           headers: Object.fromEntries([...response.headers.entries()]),
-          responseText: await response.text().catch(() => 'Unable to get response text')
+          error: parseError.toString()
         };
         setDiagnosticInfo(diagnosticData);
         
@@ -183,7 +202,7 @@ const Payment = () => {
           localStorage.removeItem('access_token');
           navigate('/login', { 
             state: { 
-              returnUrl: `/course/${courseId}`, 
+              returnUrl: `/course/${CourseId}`, 
               message: 'Sesi Anda telah berakhir. Silakan login kembali.' 
             } 
           });
@@ -194,17 +213,17 @@ const Payment = () => {
         setDiagnosticInfo({
           statusCode: response.status,
           statusText: response.statusText,
-          errorDetails: data.error || data.message || 'No error details provided',
+          errorDetails: data?.error || data?.message || responseText,
           timestamp: new Date().toISOString()
         });
         
         // Handle server errors (500)
         if (response.status === 500) {
           console.error('Server error details:', data);
-          throw new Error('Server error: The payment system is experiencing issues. Please try again later or contact support.');
+          throw new Error(`Server error: ${data?.message || 'The payment system is experiencing issues. Please try again later or contact support.'}`);
         }
         
-        throw new Error(data.message || `Failed to process checkout (Error ${response.status})`);
+        throw new Error(data?.message || `Failed to process checkout (Error ${response.status})`);
       }
       
       // Redirect to Midtrans payment page
@@ -234,7 +253,7 @@ const Payment = () => {
     setError(null);
     setDiagnosticInfo(null);
     
-    if (courseId) {
+    if (CourseId) {
       createCheckout();
     } else if (orderId) {
       fetchOrderStatus();
@@ -253,10 +272,16 @@ const Payment = () => {
   if (error) {
     return (
       <div className="payment-error">
-        <h2>Error</h2>
+        <h2>Payment Information Not Found</h2>
         <p>{error}</p>
+        {error.includes('No order ID or course ID') && (
+          <>
+            <p>You've accessed the payment page without the necessary information.</p>
+            <p>Redirecting to home page in a few seconds...</p>
+          </>
+        )}
         
-        {retryCount < 3 && (
+        {retryCount < 3 && !error.includes('No order ID or course ID') && (
           <button onClick={handleRetry} className="retry-button">
             Retry {retryCount > 0 ? `(${retryCount}/3)` : ''}
           </button>

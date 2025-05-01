@@ -1,5 +1,10 @@
 const midtransClient = require('midtrans-client');
 
+// Server and client keys - using the sandbox keys for development
+const MIDTRANS_SERVER_KEY = "SB-Mid-server-tbo4qqaOU0_CjUKon4gIh1Wa";
+const MIDTRANS_CLIENT_KEY = "SB-Mid-client-2pThbKNdtgpJ74T8";
+const CLIENT_URL = process.env.CLIENT_URL || 'https://ip.dhronz.space'; // Fallback URL
+
 // Konfigurasi client Snap Midtrans
 const createSnapTransaction = async (transaction) => {
   try {
@@ -7,8 +12,8 @@ const createSnapTransaction = async (transaction) => {
     let snap = new midtransClient.Snap({
       // Set to true for production environment
       isProduction: false,
-      serverKey: "SB-Mid-server-tbo4qqaOU0_CjUKon4gIh1Wa",
-      clientKey: "SB-Mid-client-2pThbKNdtgpJ74T8"
+      serverKey: MIDTRANS_SERVER_KEY,
+      clientKey: MIDTRANS_CLIENT_KEY
     });
 
     // Parameter untuk transaksi
@@ -26,9 +31,9 @@ const createSnapTransaction = async (transaction) => {
       },
       item_details: transaction.items,
       callbacks: {
-        finish: `${process.env.CLIENT_URL}/payment/success`,
-        error: `${process.env.CLIENT_URL}/payment/error`,
-        pending: `${process.env.CLIENT_URL}/payment/pending`
+        finish: `${CLIENT_URL}/payment?status=success&orderId=${transaction.orderId}`,
+        error: `${CLIENT_URL}/payment?status=error&orderId=${transaction.orderId}`,
+        pending: `${CLIENT_URL}/payment?status=pending&orderId=${transaction.orderId}`
       }
     };
 
@@ -47,8 +52,8 @@ const checkTransactionStatus = async (orderId) => {
     // Create Core API instance
     let core = new midtransClient.CoreApi({
       isProduction: false,
-      serverKey: process.env.MIDTRANS_SERVER_KEY,
-      clientKey: process.env.MIDTRANS_CLIENT_KEY
+      serverKey: MIDTRANS_SERVER_KEY,
+      clientKey: MIDTRANS_CLIENT_KEY
     });
 
     // Get status transaksi dari Midtrans
@@ -66,8 +71,8 @@ const verifyNotification = async (notificationJson) => {
     // Create Core API instance
     let core = new midtransClient.CoreApi({
       isProduction: false,
-      serverKey: process.env.MIDTRANS_SERVER_KEY,
-      clientKey: process.env.MIDTRANS_CLIENT_KEY
+      serverKey: MIDTRANS_SERVER_KEY,
+      clientKey: MIDTRANS_CLIENT_KEY
     });
 
     // Verifikasi signature key dari notifikasi

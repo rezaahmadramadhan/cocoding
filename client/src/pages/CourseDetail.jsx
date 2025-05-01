@@ -53,7 +53,7 @@ const CourseDetail = () => {
       }
       
       // Proceed to payment page directly - our ProtectedRoute will handle the auth check
-      navigate('/payment', { state: { courseId: id } });
+      navigate('/payment', { state: { CourseId: id } });
       
     } catch (error) {
       console.error('Checkout error:', error);
