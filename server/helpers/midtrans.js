@@ -7,8 +7,8 @@ const createSnapTransaction = async (transaction) => {
     let snap = new midtransClient.Snap({
       // Set to true for production environment
       isProduction: false,
-      serverKey: process.env.MIDTRANS_SERVER_KEY,
-      clientKey: process.env.MIDTRANS_CLIENT_KEY
+      serverKey: "SB-Mid-server-tbo4qqaOU0_CjUKon4gIh1Wa",
+      clientKey: "SB-Mid-client-2pThbKNdtgpJ74T8"
     });
 
     // Parameter untuk transaksi

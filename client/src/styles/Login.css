@@ -1,12 +1,14 @@
 /* Login Page Styles with Parallax Effects */
 .login-container {
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 2rem 0;
 }
 
 .login-bg {
@@ -109,6 +111,7 @@
   font-size: 1.05rem;
   transition: all 0.3s ease;
   background-color: #f8fafc;
+  color: #1e293b; /* Adding explicit text color */
 }
 
 .form-group input:focus {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router';
 import '../styles/Payment.css';
 
@@ -7,6 +7,9 @@ const Payment = () => {
   const [orderDetails, setOrderDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [autoRefresh, setAutoRefresh] = useState(false);
+  const [diagnosticInfo, setDiagnosticInfo] = useState(null);
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -45,24 +48,8 @@ const Payment = () => {
     return orderDetails.orderAt || orderDetails.createdAt || orderDetails.updatedAt || null;
   };
 
-  useEffect(() => {
-    // Jika kita memiliki orderId, kita langsung memeriksa status order
-    if (orderId) {
-      fetchOrderStatus();
-    } 
-    // Jika kita memiliki courseId, kita perlu membuat checkout baru
-    else if (courseId) {
-      createCheckout();
-    }
-    // Jika tidak ada keduanya, tampilkan error
-    else {
-      setError('No order ID or course ID provided');
-      setIsLoading(false);
-    }
-  }, [orderId, courseId]);
-
-  // Fungsi untuk memeriksa status order yang sudah ada
-  const fetchOrderStatus = async () => {
+  // Memoized fetchOrderStatus to use in auto-refresh
+  const fetchOrderStatus = useCallback(async () => {
     try {
       const token = localStorage.getItem('access_token');
       if (!token) {
@@ -87,18 +74,61 @@ const Payment = () => {
       // Set status based on order data
       if (data.status === 'paid' || data.status === 'completed') {
         setPaymentStatus('success');
+        // Stop auto-refresh when payment is successful
+        setAutoRefresh(false);
       } else if (data.status === 'failed') {
         setPaymentStatus('failed');
+        // Stop auto-refresh when payment has failed
+        setAutoRefresh(false);
       } else {
         setPaymentStatus('pending');
       }
+
+      // Clear any previous errors if the request succeeds
+      setError(null);
+      setDiagnosticInfo(null);
     } catch (err) {
       console.error('Error fetching order details:', err);
       setError(err.message || 'An error occurred while fetching order details');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [orderId]);
+
+  // Auto-refresh order status for pending payments
+  useEffect(() => {
+    let intervalId = null;
+    
+    if (autoRefresh && orderId) {
+      intervalId = setInterval(() => {
+        fetchOrderStatus();
+      }, 10000); // Check every 10 seconds
+    }
+    
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [autoRefresh, orderId, fetchOrderStatus]);
+
+  useEffect(() => {
+    // Jika kita memiliki orderId, kita langsung memeriksa status order
+    if (orderId) {
+      fetchOrderStatus();
+      // Enable auto-refresh for pending orders
+      setAutoRefresh(true);
+    } 
+    // Jika kita memiliki courseId, kita perlu membuat checkout baru
+    else if (courseId) {
+      createCheckout();
+    }
+    // Jika tidak ada keduanya, tampilkan error
+    else {
+      setError('No order ID or course ID provided');
+      setIsLoading(false);
+    }
+  }, [orderId, courseId, fetchOrderStatus]);
 
   // Fungsi untuk membuat checkout baru
   const createCheckout = async () => {
@@ -114,6 +144,8 @@ const Payment = () => {
         return;
       }
 
+      setIsLoading(true);
+      
       const response = await fetch(`https://ip.dhronz.space/orders/checkout`, {
         method: 'POST',
         headers: {
@@ -125,7 +157,24 @@ const Payment = () => {
         })
       });
       
-      const data = await response.json();
+      let data;
+      try {
+        // Try to parse JSON response - may fail for severe server errors
+        data = await response.json();
+      } catch (parseError) {
+        console.error('Failed to parse server response:', parseError);
+        
+        // Collect diagnostic information
+        const diagnosticData = {
+          statusCode: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries([...response.headers.entries()]),
+          responseText: await response.text().catch(() => 'Unable to get response text')
+        };
+        setDiagnosticInfo(diagnosticData);
+        
+        throw new Error(`Server error (${response.status}): Unable to process your request at this time`);
+      }
       
       if (!response.ok) {
         // Handle 401 Unauthorized specifically
@@ -140,23 +189,61 @@ const Payment = () => {
           });
           return;
         }
-        throw new Error(data.message || 'Failed to process checkout');
+        
+        // Collect diagnostic information for better debugging
+        setDiagnosticInfo({
+          statusCode: response.status,
+          statusText: response.statusText,
+          errorDetails: data.error || data.message || 'No error details provided',
+          timestamp: new Date().toISOString()
+        });
+        
+        // Handle server errors (500)
+        if (response.status === 500) {
+          console.error('Server error details:', data);
+          throw new Error('Server error: The payment system is experiencing issues. Please try again later or contact support.');
+        }
+        
+        throw new Error(data.message || `Failed to process checkout (Error ${response.status})`);
       }
       
       // Redirect to Midtrans payment page
       if (data.payment && data.payment.redirectUrl) {
         window.location.href = data.payment.redirectUrl;
-      } else {
+      } else if (data.order && data.order.id) {
         // Update order details and status
         setOrderDetails(data.order);
         setPaymentStatus('pending');
+        // Enable auto-refresh for the new order
+        setAutoRefresh(true);
+      } else {
+        throw new Error('Invalid response format: Missing payment or order information');
       }
     } catch (err) {
       console.error('Error creating checkout:', err);
       setError(err.message || 'An error occurred during checkout');
+      setPaymentStatus('failed');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Function to retry checkout when it fails
+  const handleRetry = () => {
+    setRetryCount(prev => prev + 1);
+    setError(null);
+    setDiagnosticInfo(null);
+    
+    if (courseId) {
+      createCheckout();
+    } else if (orderId) {
+      fetchOrderStatus();
+    }
+  };
+
+  // Function to toggle auto-refresh
+  const toggleAutoRefresh = () => {
+    setAutoRefresh(prev => !prev);
   };
 
   if (isLoading) {
@@ -168,6 +255,22 @@ const Payment = () => {
       <div className="payment-error">
         <h2>Error</h2>
         <p>{error}</p>
+        
+        {retryCount < 3 && (
+          <button onClick={handleRetry} className="retry-button">
+            Retry {retryCount > 0 ? `(${retryCount}/3)` : ''}
+          </button>
+        )}
+        
+        {diagnosticInfo && (
+          <div className="diagnostic-info">
+            <details>
+              <summary>Technical Details (for Support)</summary>
+              <pre>{JSON.stringify(diagnosticInfo, null, 2)}</pre>
+            </details>
+          </div>
+        )}
+        
         <Link to="/" className="back-home-button">Back to Home</Link>
       </div>
     );
@@ -195,14 +298,38 @@ const Payment = () => {
               currency: "IDR",
             }).format(orderDetails.totalPrice || 0)}</p>
             <p><strong>Date:</strong> {formatDate(getOrderDate(orderDetails))}</p>
+            
+            {paymentStatus === 'pending' && (
+              <div className="auto-refresh-toggle">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={autoRefresh}
+                    onChange={toggleAutoRefresh}
+                  />
+                  Auto-refresh status
+                </label>
+                {autoRefresh && <span className="refreshing-indicator">Refreshing...</span>}
+              </div>
+            )}
           </div>
         )}
         
         <div className="payment-actions">
           {paymentStatus === 'pending' && (
-            <a href={orderDetails?.paymentUrl} className="complete-payment-button">
-              Complete Payment
-            </a>
+            <>
+              <a href={orderDetails?.paymentUrl} className="complete-payment-button">
+                Complete Payment
+              </a>
+              <button onClick={fetchOrderStatus} className="refresh-button">
+                Refresh Status
+              </button>
+            </>
+          )}
+          {paymentStatus === 'failed' && retryCount < 3 && (
+            <button onClick={handleRetry} className="retry-button">
+              Retry Payment
+            </button>
           )}
           <Link to="/" className="back-home-button">Back to Home</Link>
         </div>

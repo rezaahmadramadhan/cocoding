@@ -167,6 +167,10 @@ const Login = () => {
   const goToHome = () => {
     navigate("/");
   };
+  
+  const goToRegister = () => {
+    navigate("/register");
+  };
 
   return (
     <div className="login-container">
@@ -228,27 +232,27 @@ const Login = () => {
               />
               
               {/* Option 2: Alternative login button if the component fails */}
-              <button 
+              {/* <button 
                 type="button" 
                 onClick={() => googleLogin()} 
                 className="alternate-google-login-button"
                 style={{ marginTop: '10px' }}
               >
                 Alternative Google Sign-In
-              </button>
+              </button> */}
               
               {/* Debug info - remove in production */}
-              {import.meta.env.DEV && (
+              {/* {import.meta.env.DEV && (
                 <div className="debug-info">
                   <p>Client ID: {clientId ? `${clientId.substring(0, 10)}...` : 'Not set'}</p>
                 </div>
-              )}
+              )} */}
             </div>
 
             <div className="form-footer">
               <p>
                 Don't have an account?{" "}
-                <span className="signup-link">Sign up</span>
+                <span className="signup-link" onClick={goToRegister}>Sign up</span>
               </p>
               <p className="back-link" onClick={goToHome}>
                 Back to Home

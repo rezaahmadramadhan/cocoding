@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import CourseDetail from "./pages/CourseDetail";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Payment from "./pages/Payment";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicOnlyRoute from "./components/PublicOnlyRoute";
@@ -20,6 +21,14 @@ function App() {
             element={
               <PublicOnlyRoute>
                 <Login />
+              </PublicOnlyRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicOnlyRoute>
+                <Register />
               </PublicOnlyRoute>
             }
           />

@@ -1,0 +1,116 @@
+/* Register form styles, extending Login styles */
+
+.login-form-container form.login-form {
+  max-width: 400px;
+}
+
+/* Additional styles for registration form */
+.register-header {
+  margin-bottom: 1.5rem;
+}
+
+.register-header h2 {
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+}
+
+.register-header p {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+/* Password strength meter */
+.password-strength {
+  margin-top: 0.5rem;
+  height: 5px;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.password-strength.weak {
+  width: 33%;
+  background-color: #ef4444;
+}
+
+.password-strength.medium {
+  width: 66%;
+  background-color: #f59e0b;
+}
+
+.password-strength.strong {
+  width: 100%;
+  background-color: #22c55e;
+}
+
+.password-hint {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+/* Button styles */
+.signup-button {
+  background-color: #2563eb;
+  transition: background-color 0.3s ease;
+}
+
+.signup-button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Adding input text color styles */
+.form-group input {
+  color: #1e293b; /* Dark text color for better visibility */
+}
+
+/* Form animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.form-group:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.form-group:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+/* Success animation */
+@keyframes success-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.registration-success {
+  animation: success-pulse 1s ease-in-out;
+  color: #22c55e;
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 5px;
+  background-color: rgba(34, 197, 94, 0.1);
+}
