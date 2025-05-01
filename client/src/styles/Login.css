@@ -214,6 +214,38 @@
   text-decoration: underline;
 }
 
+/* Alternative Google Login button */
+.alternate-google-login-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ffffff;
+  color: #4285F4;
+  border: 1px solid #4285F4;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alternate-google-login-button:hover {
+  background-color: #f1f5f9;
+}
+
+/* Debug info styles */
+.debug-info {
+  margin-top: 15px;
+  padding: 8px;
+  background-color: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #92400e;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .login-header h1 {

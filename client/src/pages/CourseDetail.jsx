@@ -1,12 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, Link } from 'react-router';
+import { useParams, Link, useNavigate } from 'react-router';
 import { fetchCourseDetail } from '../store/courseDetailSlice';
 import '../styles/CourseDetail.css';
 
 const CourseDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const { courseDetail, status, error } = useSelector((state) => state.courseDetail);
 
   useEffect(() => {
@@ -30,6 +32,44 @@ const CourseDetail = () => {
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
+  };
+
+  // Function to handle the enrollment process
+  const handleEnrollNow = async () => {
+    try {
+      setIsLoading(true);
+      
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/orders/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        },
+        body: JSON.stringify({
+          courseId: id
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to process checkout');
+      }
+      
+      // Redirect to Midtrans payment page
+      if (data.payment && data.payment.redirectUrl) {
+        window.location.href = data.payment.redirectUrl;
+      } else {
+        // Fallback if no redirect URL is provided
+        navigate('/payment', { state: { orderId: data.order.id } });
+      }
+      
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert(error.message || 'An error occurred during checkout');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (status === 'loading') {
@@ -107,7 +147,13 @@ const CourseDetail = () => {
           </div>
           
           <div className="course-actions">
-            <button className="enroll-button">Enroll Now</button>
+            <button 
+              className="enroll-button" 
+              onClick={handleEnrollNow}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Processing...' : 'Enroll Now'}
+            </button>
           </div>
         </div>
       </div>

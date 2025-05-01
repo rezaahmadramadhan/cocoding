@@ -79,6 +79,10 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      midtransOrderId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       sequelize,

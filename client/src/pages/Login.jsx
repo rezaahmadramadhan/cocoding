@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParallax } from "react-scroll-parallax";
 import { useNavigate } from "react-router";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import "../styles/Login.css";
 
 const Login = () => {
@@ -9,7 +9,21 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [clientId, setClientId] = useState("");
   const navigate = useNavigate();
+
+  // Get client ID for debugging purposes
+  useEffect(() => {
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    setClientId(googleClientId || "Not found");
+    
+    // Log configuration details for debugging
+    console.log("Google OAuth environment check:", {
+      clientIdAvailable: !!googleClientId,
+      clientIdLength: googleClientId?.length || 0,
+      origin: window.location.origin
+    });
+  }, []);
 
   // Parallax effects for different elements
   const bgParallax = useParallax({
@@ -70,6 +84,8 @@ const Login = () => {
     setError(null);
 
     try {
+      console.log("Google login success response:", credentialResponse);
+      
       // Send Google token to server for verification
       const response = await fetch("https://ip.dhronz.space/google-login", {
         method: "POST",
@@ -101,9 +117,33 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLoginError = () => {
+  const handleGoogleLoginError = (errorResponse) => {
+    console.error("Google Sign-In error:", errorResponse);
     setError("Google login failed. Please try again or use email login.");
   };
+
+  // Alternative Google login using hook approach
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      console.log("Google login token response:", tokenResponse);
+      try {
+        setLoading(true);
+        
+        // Here you would typically exchange the access_token for user info
+        // For now, just redirect to home page for testing
+        navigate("/");
+      } catch (err) {
+        console.error("Google login hook error:", err);
+        setError("Failed to complete Google login");
+      } finally {
+        setLoading(false);
+      }
+    },
+    onError: (error) => {
+      console.error("Google login hook error:", error);
+      setError("Google login failed");
+    }
+  });
 
   const goToHome = () => {
     navigate("/");
@@ -153,15 +193,36 @@ const Login = () => {
 
             <div className="google-login-container">
               <p className="or-divider">OR</p>
+              
+              {/* Option 1: GoogleLogin component */}
               <GoogleLogin
                 onSuccess={handleGoogleLoginSuccess}
                 onError={handleGoogleLoginError}
-                useOneTap
+                useOneTap={false}
                 theme="filled_blue"
                 text="continue_with"
                 shape="rectangular"
+                size="large"
+                width="100%"
                 locale="en"
               />
+              
+              {/* Option 2: Alternative login button if the component fails */}
+              <button 
+                type="button" 
+                onClick={() => googleLogin()} 
+                className="alternate-google-login-button"
+                style={{ marginTop: '10px' }}
+              >
+                Alternative Google Sign-In
+              </button>
+              
+              {/* Debug info - remove in production */}
+              {import.meta.env.DEV && (
+                <div className="debug-info">
+                  <p>Client ID: {clientId ? `${clientId.substring(0, 10)}...` : 'Not set'}</p>
+                </div>
+              )}
             </div>
 
             <div className="form-footer">
