@@ -132,12 +132,18 @@ function Home() {
         {isAuthenticated && (
           <div className="user-navbar">
             <div className="user-icon" onClick={toggleNavbar}>
-              <span>👤</span>
+              <i className="fas fa-user"></i>
               {isNavbarOpen && (
                 <div className="user-dropdown">
-                  <button onClick={() => navigateTo('/edit-profile')}>Edit Account</button>
-                  <button onClick={handleDeleteAccount} className="danger-button">Delete Account</button>
-                  <button onClick={handleLogout}>Logout</button>
+                  <button onClick={() => navigateTo('/edit-profile')}>
+                    <i className="fas fa-user-edit"></i> Edit Account
+                  </button>
+                  <button onClick={handleDeleteAccount} className="danger-button">
+                    <i className="fas fa-user-slash"></i> Delete Account
+                  </button>
+                  <button onClick={handleLogout}>
+                    <i className="fas fa-sign-out-alt"></i> Logout
+                  </button>
                 </div>
               )}
             </div>
@@ -198,14 +204,13 @@ function Home() {
         <footer className="footer">
           <div className="footer-content">
             <div className="footer-section">
-              <h3>Cocoding</h3>
+              <h3>cocoding</h3>
               <p>Unlock your coding potential with our expert-led courses and supportive community.</p>
             </div>
             
             <div className="footer-section">
               <h4>Explore</h4>
               <ul>
-                <li><a href="#featured-section">Learning Paths</a></li>
                 <li><a href="#courses-section">All Courses</a></li>
                 <li><a href="#testimonials-section">Testimonials</a></li>
               </ul>

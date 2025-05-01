@@ -31,10 +31,32 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  color: #000 !important; /* Ubah ke warna hitam solid */
+  background-color: #fff !important; /* Memastikan background textarea berwarna putih */
 }
 
+/* Tambahan styling untuk mengatasi perubahan warna autofill */
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover, 
+.form-group input:-webkit-autofill:focus,
+.form-group input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #000 !important; /* Memastikan teks autofill tetap hitam */
+  color: #000 !important;
+}
+
+.form-group textarea::placeholder,
+.form-group input::placeholder {
+  color: #999;
+}
+
+/* Tambahan styling untuk kondisi input lainnya */
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group input:active,
+.form-group textarea:active {
+  color: #000 !important;
   outline: none;
   border-color: #4a90e2;
   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);

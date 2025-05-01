@@ -2,11 +2,13 @@
 
 .login-form-container form.login-form {
   max-width: 400px;
+  margin: 0 auto; /* Ensure horizontal centering */
 }
 
 /* Additional styles for registration form */
 .register-header {
   margin-bottom: 1.5rem;
+  text-align: center; /* Ensure text is centered */
 }
 
 .register-header h2 {
@@ -17,6 +19,74 @@
 .register-header p {
   color: #64748b;
   font-size: 0.9rem;
+}
+
+/* Centering all form elements within the register form */
+.register-form {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+}
+
+.register-form h2 {
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 1.8rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.error-message {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 0.9rem;
+  border-radius: 8px;
+  margin-bottom: 1.8rem;
+  text-align: center;
+  border-left: 4px solid #dc2626;
+  font-weight: 500;
+  width: 100%; /* Ensure it takes full width */
+}
+
+.form-group {
+  margin-bottom: 1.8rem;
+  text-align: center;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.form-group:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.form-group:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: #334155;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  color: #1e293b;
+  text-align: left;
 }
 
 /* Password strength meter */
@@ -73,22 +143,6 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.form-group {
-  animation: fadeIn 0.4s ease-out forwards;
-}
-
-.form-group:nth-child(2) {
-  animation-delay: 0.1s;
-}
-
-.form-group:nth-child(3) {
-  animation-delay: 0.2s;
-}
-
-.form-group:nth-child(4) {
-  animation-delay: 0.3s;
 }
 
 /* Success animation */

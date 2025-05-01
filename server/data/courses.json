@@ -6,7 +6,7 @@
     "totalEnrollment": 150,
     "startDate": "2025-05-01",
     "desc": "Learn the basics of JavaScript, the most popular programming language for web development.",
-    "courseImg": "https://example.com/js-course.jpg",
+    "courseImg": "https://cdn.pixabay.com/photo/2015/04/23/17/41/javascript-736400_1280.png",
     "durationHours": 20,
     "code": "intro_20250501",
     "CategoryId": 1
@@ -18,7 +18,7 @@
     "totalEnrollment": 120,
     "startDate": "2025-05-15",
     "desc": "Master advanced Python concepts and techniques for data science and web development.",
-    "courseImg": "https://example.com/python-course.jpg",
+    "courseImg": "https://cdn.pixabay.com/photo/2023/05/06/16/45/python-7974917_1280.png",
     "durationHours": 30,
     "code": "advan_20250515",
     "CategoryId": 3
@@ -30,7 +30,7 @@
     "totalEnrollment": 200,
     "startDate": "2025-06-01",
     "desc": "Become a full-stack web developer by learning both front-end and back-end technologies.",
-    "courseImg": "https://example.com/fullstack-course.jpg",
+    "courseImg": "https://img.freepik.com/free-vector/web-development-programmer-engineering-coding-website-augmented-reality-interface-screens-developer-project-engineer-programming-software-application-design-cartoon-illustration_107791-3863.jpg",
     "durationHours": 40,
     "code": "fulls_20250601",
     "CategoryId": 1
@@ -42,7 +42,7 @@
     "totalEnrollment": 80,
     "startDate": "2025-06-15",
     "desc": "Learn how to build cross-platform mobile applications using React Native.",
-    "courseImg": "https://example.com/react-native-course.jpg",
+    "courseImg": "https://www.appcoda.com/wp-content/uploads/2015/04/react-native-1024x631.png",
     "durationHours": 25,
     "code": "mobil_20250615",
     "CategoryId": 2
@@ -54,7 +54,7 @@
     "totalEnrollment": 100,
     "startDate": "2025-07-01",
     "desc": "Dive into data science using Python, covering data analysis, visualization, and machine learning.",
-    "courseImg": "https://example.com/data-science-course.jpg",
+    "courseImg": "https://img.freepik.com/free-vector/data-science-banner_33099-1687.jpg",
     "durationHours": 35,
     "code": "datas_20250701",
     "CategoryId": 3
@@ -66,7 +66,7 @@
     "totalEnrollment": 60,
     "startDate": "2025-07-15",
     "desc": "Learn how to create games using Unity, one of the most popular game development platforms.",
-    "courseImg": "https://example.com/unity-course.jpg",
+    "courseImg": "https://unity.com/sites/default/files/styles/16_9_l_scale_width/public/2023-06/Unity-game-development-image.jpg",
     "durationHours": 30,
     "code": "gamed_20250715",
     "CategoryId": 4
@@ -78,7 +78,7 @@
     "totalEnrollment": 70,
     "startDate": "2025-08-01",
     "desc": "Understand the basics of cloud computing and how to use cloud services effectively.",
-    "courseImg": "https://example.com/cloud-course.jpg",
+    "courseImg": "https://img.freepik.com/free-vector/cloud-computing-concept-with-icons_23-2147700207.jpg",
     "durationHours": 28,
     "code": "cloud_20250801",
     "CategoryId": 5
@@ -90,7 +90,7 @@
     "totalEnrollment": 90,
     "startDate": "2025-08-15",
     "desc": "Learn the fundamentals of cybersecurity and how to protect systems from threats.",
-    "courseImg": "https://example.com/cybersecurity-course.jpg",
+    "courseImg": "https://img.freepik.com/free-vector/cyber-security-concept_23-2148532223.jpg",
     "durationHours": 32,
     "code": "cyber_20250815",
     "CategoryId": 6
@@ -102,7 +102,7 @@
     "totalEnrollment": 110,
     "startDate": "2025-09-01",
     "desc": "Get introduced to the concepts of artificial intelligence and machine learning.",
-    "courseImg": "https://example.com/ai-course.jpg",
+    "courseImg": "https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg",
     "durationHours": 30,
     "code": "artif_20250901",
     "CategoryId": 7
@@ -114,7 +114,7 @@
     "totalEnrollment": 75,
     "startDate": "2025-09-15",
     "desc": "Learn the principles of DevOps and how to implement them in software development.",
-    "courseImg": "https://example.com/devops-course.jpg",
+    "courseImg": "https://img.freepik.com/free-photo/devops-concept-business-software-development_107791-16639.jpg",
     "durationHours": 26,
     "code": "devop_20250915",
     "CategoryId": 8
@@ -126,7 +126,7 @@
     "totalEnrollment": 85,
     "startDate": "2025-10-01",
     "desc": "Explore the world of IoT by building projects with Arduino.",
-    "courseImg": "https://example.com/iot-course.jpg",
+    "courseImg": "https://www.seeedstudio.com/blog/wp-content/uploads/2020/01/IoT-FI.jpg",
     "durationHours": 27,
     "code": "iotde_20251001",
     "CategoryId": 9
@@ -138,7 +138,7 @@
     "totalEnrollment": 50,
     "startDate": "2025-10-15",
     "desc": "Learn the basics of C# programming language and its applications.",
-    "courseImg": "https://example.com/csharp-course.jpg",
+    "courseImg": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRprSgI69jv6PJB-65DS-P7vJ-bF6hpHnBJ3ZNZGNVcCYsfFM_ajXhgXlBTGTiIlJfGIw&usqp=CAU",
     "durationHours": 22,
     "code": "intro_20251015",
     "CategoryId": 4
@@ -150,7 +150,7 @@
     "totalEnrollment": 65,
     "startDate": "2025-11-01",
     "desc": "Get started with Java programming and object-oriented concepts.",
-    "courseImg": "https://example.com/java-course.jpg",
+    "courseImg": "https://www.devopsschool.com/blog/wp-content/uploads/2022/03/java_logo_icon_168609.png",
     "durationHours": 24,
     "code": "javap_20251101",
     "CategoryId": 2
@@ -162,7 +162,7 @@
     "totalEnrollment": 95,
     "startDate": "2025-11-15",
     "desc": "Learn how to analyze data using Python libraries like Pandas and NumPy.",
-    "courseImg": "https://example.com/python-data-course.jpg",
+    "courseImg": "https://miro.medium.com/v2/resize:fit:1200/1*IZYFJS9sKKtFKBgqmzYwBQ.png",
     "durationHours": 29,
     "code": "pytho_20251115",
     "CategoryId": 3
@@ -174,7 +174,7 @@
     "totalEnrollment": 78,
     "startDate": "2025-12-01",
     "desc": "Build web applications using Django, a powerful Python web framework.",
-    "courseImg": "https://example.com/django-course.jpg",
+    "courseImg": "https://miro.medium.com/v2/resize:fit:1200/1*1OBwRCFGGi9QhcxvTj_cJA.png",
     "durationHours": 31,
     "code": "webde_20251201",
     "CategoryId": 1
@@ -186,7 +186,7 @@
     "totalEnrollment": 120,
     "startDate": "2025-12-15",
     "desc": "Learn the basics of machine learning and its applications.",
-    "courseImg": "https://example.com/ml-course.jpg",
+    "courseImg": "https://img.freepik.com/free-vector/machine-learning-concept-illustration_114360-7867.jpg",
     "durationHours": 33,
     "code": "intro_20251215",
     "CategoryId": 7
@@ -198,7 +198,7 @@
     "totalEnrollment": 88,
     "startDate": "2026-01-01",
     "desc": "Learn how to build RESTful APIs using Node.js and Express.",
-    "courseImg": "https://example.com/nodejs-course.jpg",
+    "courseImg": "https://miro.medium.com/v2/resize:fit:1400/1*f7ztMaMM0ed5YRuiSLLB-A.png",
     "durationHours": 30,
     "code": "build_20260101",
     "CategoryId": 1
@@ -210,7 +210,7 @@
     "totalEnrollment": 70,
     "startDate": "2026-01-15",
     "desc": "Learn the basics of SQL and how to use it for data analysis.",
-    "courseImg": "https://example.com/sql-course.jpg",
+    "courseImg": "https://www.simplilearn.com/ice9/free_resources_article_thumb/What_is_Data_Science.jpg",
     "durationHours": 25,
     "code": "intro_20260115",
     "CategoryId": 3
@@ -222,7 +222,7 @@
     "totalEnrollment": 95,
     "startDate": "2026-02-01",
     "desc": "Understand the fundamentals of blockchain technology and its applications.",
-    "courseImg": "https://example.com/blockchain-course.jpg",
+    "courseImg": "https://img.freepik.com/free-vector/blockchain-technology-background-with-padlock_23-2147897892.jpg",
     "durationHours": 28,
     "code": "intro_20260201",
     "CategoryId": 6
@@ -234,7 +234,7 @@
     "totalEnrollment": 85,
     "startDate": "2026-02-15",
     "desc": "Learn how to use Git and GitHub for version control and collaboration.",
-    "courseImg": "https://example.com/git-course.jpg",
+    "courseImg": "https://git-scm.com/images/branching-illustration@2x.png",
     "durationHours": 20,
     "code": "intro_20260215",
     "CategoryId": 1
@@ -246,7 +246,7 @@
     "totalEnrollment": 110,
     "startDate": "2026-03-01",
     "desc": "Learn the basics of ethical hacking and penetration testing.",
-    "courseImg": "https://example.com/ethical-hacking-course.jpg",
+    "courseImg": "https://img.freepik.com/free-vector/hacker-operating-laptop-cartoon-icon-illustration-technology-icon-concept-isolated-flat-cartoon-style_138676-2387.jpg",
     "durationHours": 35,
     "code": "intro_20260301",
     "CategoryId": 6
@@ -258,7 +258,7 @@
     "totalEnrollment": 50,
     "startDate": "2026-04-01",
     "desc": "An introductory course on Golang programming language.",
-    "courseImg": "https://example.com/golang-course.jpg",
+    "courseImg": "https://miro.medium.com/v2/resize:fit:1200/1*i2skbfmDsHayHhqPfwt6pA.png",
     "durationHours": 20,
     "code": "golan_20260401",
     "CategoryId": 4
@@ -270,7 +270,7 @@
     "totalEnrollment": 60,
     "startDate": "2026-04-15",
     "desc": "Learn the basics of PHP programming language for web development.",
-    "courseImg": "https://example.com/php-course.jpg",
+    "courseImg": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/1200px-PHP-logo.svg.png",
     "durationHours": 22,
     "code": "intro_20260415",
     "CategoryId": 1
@@ -282,7 +282,7 @@
     "totalEnrollment": 75,
     "startDate": "2026-05-01",
     "desc": "Learn how to build web applications using Ruby on Rails framework.",
-    "courseImg": "https://example.com/ruby-course.jpg",
+    "courseImg": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Ruby_On_Rails_Logo.svg/1200px-Ruby_On_Rails_Logo.svg.png",
     "durationHours": 30,
     "code": "intro_20260501",
     "CategoryId": 1

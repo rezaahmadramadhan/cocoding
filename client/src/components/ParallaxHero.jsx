@@ -42,17 +42,19 @@ const ParallaxHero = () => {
       
       <div className={`hero-content ${isVisible ? 'visible' : ''}`} ref={textParallax.ref}>
         <div className="animated-badge">Premium Courses</div>
-        <h1>Cocoding</h1>
+        <h1>cocoding</h1>
         <p>Unlock Your Coding Potential</p>
         <div className="hero-features">
           <div className="feature"><span className="feature-icon">✓</span> Expert Instructors</div>
           <div className="feature"><span className="feature-icon">✓</span> Hands-on Projects</div>
           <div className="feature"><span className="feature-icon">✓</span> Community Support</div>
         </div>
-        <button className="cta-button pulse" onClick={scrollToCourses}>
-          Explore Courses
-          <span className="button-arrow">→</span>
-        </button>
+        <div className="button-wrapper">
+          <button className="cta-button pulse" onClick={scrollToCourses}>
+            Explore Courses
+            <span className="button-arrow">→</span>
+          </button>
+        </div>
       </div>
       
       <div className="scroll-indicator">

@@ -223,7 +223,10 @@ Would you like to try another quiz? Enter a new topic to begin.`);
   return (
     <div className="chat-quiz-container">
       <div className="chat-quiz-header">
-        <h3>Interactive Quiz</h3>
+        <div className="header-content">
+          <i className="fas fa-brain quiz-icon"></i>
+          <h3>Interactive Quiz</h3>
+        </div>
         <button className="close-button" onClick={onClose}>×</button>
       </div>
       
@@ -286,7 +289,7 @@ Would you like to try another quiz? Enter a new topic to begin.`);
           className="send-button"
           disabled={isLoading || !inputText.trim()}
         >
-          {isLoading ? '...' : 'Send'}
+          {isLoading ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-paper-plane"></i>}
         </button>
       </form>
     </div>

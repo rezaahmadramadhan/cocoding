@@ -39,18 +39,25 @@ const Login = () => {
 
   // Parallax effects for different elements
   const bgParallax = useParallax({
-    speed: -10,
+    speed: -5,
+    shouldAlwaysCompleteAnimation: true,
+    translateY: [0, 0], // Only allow vertical movement
+    rootMargin: { top: 0, right: 0, bottom: 0, left: 0 },
   });
 
   const formParallax = useParallax({
-    scale: [0.9, 1],
+    scale: [0.95, 1],
     opacity: [0.8, 1],
     easing: "easeInQuad",
+    shouldAlwaysCompleteAnimation: true,
+    translateX: [0, 0], // Prevent horizontal movement
   });
 
   const titleParallax = useParallax({
     translateY: [0, -15],
     opacity: [0.7, 1],
+    shouldAlwaysCompleteAnimation: true,
+    translateX: [0, 0], // Prevent horizontal movement
   });
 
   const handleSubmit = async (e) => {
@@ -169,13 +176,12 @@ const Login = () => {
       <div className="login-content">
         <div className="login-header" ref={titleParallax.ref}>
           <h1>Cocoding</h1>
-          <p>Welcome back, let's continue learning!</p>
+          <p>Start your learning journey with our expert-led courses</p>
         </div>
 
         <div className="login-form-container" ref={formParallax.ref}>
-          {message && <div className="login-message">{message}</div>}
           <form className="login-form" onSubmit={handleSubmit}>
-            <h2>Login</h2>
+            <h2>Welcome Back</h2>
 
             {error && <div className="error-message">{error}</div>}
 
@@ -187,6 +193,8 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
+                placeholder="Enter your email"
+                required
               />
             </div>
 
@@ -198,17 +206,18 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
+                placeholder="Enter your password"
+                required
               />
             </div>
 
             <button type="submit" className="login-button" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Signing in..." : "Sign In"}
             </button>
 
             <div className="google-login-container">
               <p className="or-divider">OR</p>
               
-              {/* Option 1: GoogleLogin component */}
               <GoogleLogin
                 onSuccess={handleGoogleLoginSuccess}
                 onError={handleGoogleLoginError}
@@ -220,23 +229,6 @@ const Login = () => {
                 width="100%"
                 locale="en"
               />
-              
-              {/* Option 2: Alternative login button if the component fails */}
-              {/* <button 
-                type="button" 
-                onClick={() => googleLogin()} 
-                className="alternate-google-login-button"
-                style={{ marginTop: '10px' }}
-              >
-                Alternative Google Sign-In
-              </button> */}
-              
-              {/* Debug info - remove in production */}
-              {/* {import.meta.env.DEV && (
-                <div className="debug-info">
-                  <p>Client ID: {clientId ? `${clientId.substring(0, 10)}...` : 'Not set'}</p>
-                </div>
-              )} */}
             </div>
 
             <div className="form-footer">
