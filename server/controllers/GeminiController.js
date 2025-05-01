@@ -41,7 +41,11 @@ class GeminiController {
       // Parse the response to ensure it's valid JSON
       let quizData;
       try {
-        quizData = JSON.parse(quizResponse);
+        // Try to extract JSON from the response using regex
+        const jsonMatch = quizResponse.match(/\[\s*{[\s\S]*}\s*\]/);
+        const jsonStr = jsonMatch ? jsonMatch[0] : quizResponse;
+        
+        quizData = JSON.parse(jsonStr);
         
         // Validate the structure
         if (!Array.isArray(quizData)) {

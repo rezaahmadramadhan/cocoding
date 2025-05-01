@@ -40,7 +40,7 @@ function ChatQuiz({ isOpen, onClose }) {
     addBotMessage(`Generating a ${difficulty} level quiz about ${topic}...`);
 
     try {
-      const response = await axios.post('/api/gemini/generate-quiz', {
+      const response = await axios.post('https://ip.dhronz.space/gemini/generate-quiz', {
         topic,
         difficulty,
         numberOfQuestions: 5
@@ -91,7 +91,7 @@ Type your answer (A, B, C, or D) or type "hint" if you need help.`;
     setIsLoading(true);
     
     try {
-      const response = await axios.post('/api/gemini/check-answers', {
+      const response = await axios.post('https://ip.dhronz.space/gemini/check-answers', {
         quizId: currentQuiz.quizId,
         answers: [answer],
         questionIndices: [questionIndex]
@@ -129,7 +129,7 @@ ${result.explanation}`);
     addUserMessage("hint");
     
     try {
-      const response = await axios.post('/api/gemini/get-hint', {
+      const response = await axios.post('https://ip.dhronz.space/gemini/get-hint', {
         quizId: currentQuiz.quizId,
         questionIndex: currentQuestion.index
       });
@@ -152,7 +152,7 @@ ${result.explanation}`);
     try {
       const answersArray = Object.keys(userAnswers).map(index => userAnswers[index]);
       
-      const response = await axios.post('/api/gemini/check-answers', {
+      const response = await axios.post('https://ip.dhronz.space/gemini/check-answers', {
         quizId: currentQuiz.quizId,
         answers: answersArray
       });
