@@ -2,14 +2,14 @@
   "development": {
     "username": "postgres",
     "password": "postgres",
-    "database": "cocoding_dev",
+    "database": "Cocoding_dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "postgres",
-    "database": "cocoding_test",
+    "database": "Cocoding_test",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "logging": false

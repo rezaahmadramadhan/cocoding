@@ -1,51 +1,61 @@
 /* Courses Component Styles - Enhanced with Parallax */
 .courses-container {
-  padding: 4rem 2rem;
+  padding: 5rem 2.5rem; /* Increased padding for better breathing room */
   max-width: 1200px;
   margin: 0 auto;
-  background: linear-gradient(to bottom, rgba(15, 15, 15, 0.8), rgba(30, 30, 30, 0.9));
+  background: transparent;
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .courses-container h2 {
   text-align: center;
   margin-bottom: 3rem;
-  font-size: 2.5rem;
-  color: #61dafb;
-  text-shadow: 0 2px 10px rgba(97, 218, 251, 0.5);
-  letter-spacing: 1px;
+  font-size: 2.8rem;
+  color: #1a202c; /* Darker text for better contrast */
   font-weight: 700;
-  transition: transform 0.3s, text-shadow 0.3s;
+  position: relative;
+  display: inline-block;
+}
+
+.courses-container h2:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(to right, #61dafb, #4a90e2);
+  border-radius: 2px;
 }
 
 .courses-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
+  gap: 2.5rem; /* Increased gap for better separation */
   perspective: 1000px;
+  margin-top: 50px;
 }
 
 .course-card {
   position: relative;
-  background: rgba(25, 25, 35, 0.8);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(97, 218, 251, 0.2);
-  backdrop-filter: blur(5px);
+  background: white;
+  border-radius: 18px; /* Slightly more rounded corners */
+  overflow: hidden; /* Mengubah kembali menjadi hidden agar konten tidak keluar dari card */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06); /* Softer shadow */
   transform-style: preserve-3d;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: 1px solid rgba(97, 218, 251, 0.1);
-  width: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  width: 340px; /* Slightly wider for better readability */
   flex: 0 0 auto;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .course-card:hover {
-  transform: translateY(-10px) scale(1.02) !important;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 30px rgba(97, 218, 251, 0.3);
-  border-color: rgba(97, 218, 251, 0.3);
+  transform: translateY(-8px) scale(1.01) !important; /* Subtle hover effect */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  border-color: rgba(74, 144, 226, 0.2);
 }
 
 .course-card:before {
@@ -55,7 +65,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(97, 218, 251, 0.1) 0%, transparent 100%);
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.05) 0%, transparent 100%);
   z-index: 0;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -68,132 +78,93 @@
 .card-content {
   position: relative;
   z-index: 1;
-  padding: 1.5rem 1.5rem 2.5rem; /* Menambahkan padding bawah lebih besar */
+  padding: 2rem; /* More generous padding */
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
 .card-header {
-  margin-bottom: 1rem;
-  border-bottom: 1px solid rgba(97, 218, 251, 0.2);
-  padding-bottom: 1rem;
+  margin-bottom: 1.5rem; /* More space */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08); /* Slightly darker line */
+  padding-bottom: 1.5rem;
 }
 
 .course-card h3 {
-  color: #61dafb;
+  color: #1a202c; /* Darker text for better contrast */
   margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-size: 1.4rem;
+  margin-bottom: 0.7rem;
+  font-size: 1.5rem; /* Slightly larger */
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px; /* Less letter spacing */
+  line-height: 1.3; /* Better line height */
   transition: color 0.3s;
 }
 
 .course-card:hover h3 {
-  color: #7ee5ff;
+  color: #4a90e2;
 }
 
 .card-body {
   flex-grow: 1;
-  margin-bottom: 0.75rem; /* Mengurangi margin bawah dari 1.5rem */
+  margin-bottom: 1.8rem;
 }
 
 .card-body p {
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
-  font-size: 0.95rem;
+  color: #4a5568; /* Darker text for better contrast */
+  line-height: 1.7;
+  font-size: 1.05rem; /* Slightly larger for better readability */
 }
 
 .card-footer {
-  margin-top: 0; /* Menghilangkan margin-top auto agar tombol naik */
+  margin-top: auto;
+  position: relative;
+  z-index: 1; /* Menurunkan z-index agar tetap dalam konteks card */
+  padding-bottom: 50px; /* Menambah padding bawah untuk memberi ruang pada tombol */
 }
 
 .course-price {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: bold;
-  color: #7ee5ff;
-  margin: 0.5rem 0;
-  text-shadow: 0 0 5px rgba(97, 218, 251, 0.3);
-  transition: transform 0.3s, text-shadow 0.3s;
+  color: #3182ce; /* Slightly darker blue for better contrast */
+  margin: 0.7rem 0; /* More vertical space */
+  transition: transform 0.3s;
 }
 
 .course-card:hover .course-price {
   transform: scale(1.05);
-  text-shadow: 0 0 8px rgba(97, 218, 251, 0.5);
-}
-
-.enroll-button {
-  background: linear-gradient(135deg, #61dafb 0%, #2389da 100%);
-  color: #121212;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 30px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-  width: 100%;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 15px rgba(97, 218, 251, 0.3);
-}
-
-.enroll-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(97, 218, 251, 0.5);
-  background: linear-gradient(135deg, #7ee5ff 0%, #3597e8 100%);
-}
-
-.enroll-button:active {
-  transform: translateY(1px);
-}
-
-.enroll-button:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.7s;
-}
-
-.enroll-button:hover:before {
-  left: 100%;
 }
 
 .detail-button {
-  background: linear-gradient(135deg, #61dafb 0%, #2389da 100%);
-  color: #121212;
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+  color: white;
   border: none;
-  padding: 10px 18px;
-  border-radius: 30px;
+  padding: 13px 26px;
+  border-radius: 50px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 0.95rem;
+  font-weight: 600;
+  font-size: 1rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 10px rgba(97, 218, 251, 0.3);
-  transform: translateY(-70px); /* Mempertahankan posisi tombol */
-  z-index: 2;
+  letter-spacing: 0.5px;
+  box-shadow: 0 5px 15px rgba(74, 144, 226, 0.25);
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  transform: translateY(0); /* Changed from -5px to 0 */
+  z-index: 15; /* Increased z-index to ensure it's above card elements */
 }
 
 .detail-button:hover {
-  transform: translateY(-75px); /* Naik sedikit saja dari posisi awal */
-  box-shadow: 0 6px 15px rgba(97, 218, 251, 0.5);
-  background: linear-gradient(135deg, #7ee5ff 0%, #3597e8 100%);
+  transform: translateY(-5px); /* Changed from -8px to -5px for a more subtle lift effect */
+  box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+  background: linear-gradient(135deg, #3182ce, #2b6cb0);
 }
 
 .detail-button:active {
-  transform: translateY(-68px); /* Sedikit turun dari posisi awal saat diklik */
-  box-shadow: 0 3px 10px rgba(97, 218, 251, 0.3);
+  transform: translateY(1px);
 }
 
 .detail-button:before {
@@ -213,12 +184,48 @@
 
 .loading, .error {
   text-align: center;
-  padding: 3rem;
-  font-size: 1.3rem;
-  background: rgba(30, 30, 30, 0.8);
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  color: #61dafb;
-  max-width: 600px;
-  margin: 0 auto;
+  padding: 3.5rem;
+  font-size: 1.25rem;
+  background: rgba(247, 250, 252, 0.9); /* Lighter background */
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  color: #3182ce; /* Darker blue for better contrast */
+  max-width: 650px; /* Slightly wider */
+  margin: 2.5rem auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .courses-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .courses-container h2 {
+    font-size: 2.2rem;
+  }
+  
+  .courses-container {
+    padding: 3rem 1.5rem;
+  }
+  
+  .course-card {
+    width: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .courses-container h2 {
+    font-size: 2rem;
+  }
+  
+  .courses-container {
+    padding: 2rem 1rem;
+  }
+  
+  .course-card {
+    width: 100%;
+    max-width: 320px;
+  }
 }

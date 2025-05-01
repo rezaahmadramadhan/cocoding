@@ -115,7 +115,7 @@ const Login = () => {
 
       <div className="login-content">
         <div className="login-header" ref={titleParallax.ref}>
-          <h1>CoCoding</h1>
+          <h1>Cocoding</h1>
           <p>Welcome back, let's continue learning!</p>
         </div>
 
