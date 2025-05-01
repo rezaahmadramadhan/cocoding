@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 
 /**
  * PublicOnlyRoute - Component to protect routes that should only be accessible when not logged in

@@ -3,7 +3,7 @@ const midtransClient = require('midtrans-client');
 // Server and client keys - using the sandbox keys for development
 const MIDTRANS_SERVER_KEY = "SB-Mid-server-tbo4qqaOU0_CjUKon4gIh1Wa";
 const MIDTRANS_CLIENT_KEY = "SB-Mid-client-2pThbKNdtgpJ74T8";
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173/'; // Fallback URL
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173'; // Fallback URL
 
 // Konfigurasi client Snap Midtrans
 const createSnapTransaction = async (transaction) => {
