@@ -1,260 +1,209 @@
 import { useState, useEffect } from "react";
-import { useParallax } from "react-scroll-parallax";
 import { useNavigate } from "react-router";
-import "../styles/Login.css";
+import "../styles/EditProfile.css";
 
-const EditProfile = () => {
-  const [userData, setUserData] = useState({
+function EditProfile() {
+  const navigate = useNavigate();
+  
+  // State for form fields
+  const [formData, setFormData] = useState({
     fullName: "",
     age: "",
     address: "",
     phone: "",
     about: ""
   });
+  
+  // State for loading, error and success messages
   const [loading, setLoading] = useState(false);
-  const [fetchingData, setFetchingData] = useState(true);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const navigate = useNavigate();
-
-  // Check if user is authenticated
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  
+  // Load existing profile data when component mounts
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      navigate("/login", {
-        state: { 
-          returnUrl: "/edit-profile", 
-          message: "Anda harus login terlebih dahulu untuk mengedit profil" 
-        }
-      });
-    } else {
-      fetchUserProfile();
-    }
-  }, [navigate]);
-
-  // Fetch user profile data
-  const fetchUserProfile = async () => {
-    setFetchingData(true);
-    
-    try {
+    const fetchProfile = async () => {
       const token = localStorage.getItem("access_token");
-      const response = await fetch("https://ip.dhronz.space/profile", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          localStorage.removeItem("access_token");
-          navigate("/login", {
-            state: { 
-              returnUrl: "/edit-profile", 
-              message: "Sesi Anda telah berakhir. Silakan login kembali." 
-            }
-          });
-          return;
-        }
-        throw new Error("Failed to fetch profile data");
+      
+      if (!token) {
+        navigate("/login");
+        return;
       }
-
-      const data = await response.json();
-      setUserData({
-        fullName: data.fullName || "",
-        age: data.age || "",
-        address: data.address || "",
-        phone: data.phone || "",
-        about: data.about || ""
-      });
-    } catch (err) {
-      console.error("Error fetching user profile:", err);
-      setError("Failed to load your profile data. Please try again later.");
-    } finally {
-      setFetchingData(false);
-    }
-  };
-
-  // Handle form input changes
+      
+      try {
+        setLoading(true);
+        const response = await fetch("https://ip.dhronz.space/profile", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile data");
+        }
+        
+        const profileData = await response.json();
+        
+        // Update form data with existing profile information
+        setFormData({
+          fullName: profileData.fullName || "",
+          age: profileData.age || "",
+          address: profileData.address || "",
+          phone: profileData.phone || "",
+          about: profileData.about || ""
+        });
+      } catch (err) {
+        setError(err.message || "An error occurred while fetching your profile");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchProfile();
+  }, [navigate]);
+  
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData(prev => ({
-      ...prev,
+    setFormData({
+      ...formData,
       [name]: value
-    }));
+    });
   };
-
+  
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-
+    
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    
     try {
-      const token = localStorage.getItem("access_token");
-      const response = await fetch("https://ip.dhronz.space/update-profile", {
+      setLoading(true);
+      setError("");
+      
+      const response = await fetch("https://ip.dhronz.space/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify(userData)
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          age: formData.age === "" ? null : Number(formData.age),
+          address: formData.address,
+          phone: formData.phone,
+          about: formData.about
+        }),
       });
-
+      
       if (!response.ok) {
-        if (response.status === 401) {
-          localStorage.removeItem("access_token");
-          navigate("/login", {
-            state: { 
-              returnUrl: "/edit-profile", 
-              message: "Sesi Anda telah berakhir. Silakan login kembali." 
-            }
-          });
-          return;
-        }
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to update profile");
       }
-
+      
+      const data = await response.json();
       setSuccess("Profile updated successfully!");
       
-      // Scroll to top to make sure user sees success message
-      window.scrollTo(0, 0);
+      // Navigate back to home after successful update
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (err) {
       setError(err.message || "An error occurred while updating your profile");
-      console.error("Update profile error:", err);
     } finally {
       setLoading(false);
     }
   };
-
-  // Parallax effects
-  const bgParallax = useParallax({
-    speed: -10,
-  });
-
-  const formParallax = useParallax({
-    scale: [0.9, 1],
-    opacity: [0.8, 1],
-    easing: "easeInQuad",
-  });
-
-  const titleParallax = useParallax({
-    translateY: [0, -15],
-    opacity: [0.7, 1],
-  });
-
-  const goToHome = () => {
-    navigate("/");
+  
+  // Return to previous page
+  const handleCancel = () => {
+    navigate(-1);
   };
 
-  if (fetchingData) {
-    return (
-      <div className="login-container">
-        <div className="login-bg"></div>
-        <div className="login-content">
-          <div className="login-form-container">
-            <div className="loading-message">Loading your profile data...</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="login-container">
-      <div className="login-bg" ref={bgParallax.ref}></div>
-
-      <div className="login-content">
-        <div className="login-header" ref={titleParallax.ref}>
-          <h1>Cocoding</h1>
-          <p>Update your profile information</p>
-        </div>
-
-        <div className="login-form-container edit-profile-container" ref={formParallax.ref}>
-          <form className="login-form" onSubmit={handleSubmit}>
-            <h2>Edit Profile</h2>
-            
-            {error && <div className="error-message">{error}</div>}
-            {success && <div className="success-message">{success}</div>}
-
-            <div className="form-group">
-              <label htmlFor="fullName">Full Name</label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                value={userData.fullName}
-                onChange={handleChange}
-                disabled={loading}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="age">Age</label>
-              <input
-                type="number"
-                id="age"
-                name="age"
-                value={userData.age}
-                onChange={handleChange}
-                disabled={loading}
-                min="0"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="phone">Phone</label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={userData.phone}
-                onChange={handleChange}
-                disabled={loading}
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="address">Address</label>
-              <textarea
-                id="address"
-                name="address"
-                value={userData.address}
-                onChange={handleChange}
-                disabled={loading}
-                rows="3"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="about">About Me</label>
-              <textarea
-                id="about"
-                name="about"
-                value={userData.about}
-                onChange={handleChange}
-                disabled={loading}
-                rows="4"
-              />
-            </div>
-
-            <button type="submit" className="login-button" disabled={loading}>
+    <div className="edit-profile-container">
+      <h1>Edit Profile</h1>
+      
+      {error && <div className="error-message">{error}</div>}
+      {success && <div className="success-message">{success}</div>}
+      
+      {loading ? (
+        <div className="loading">Loading...</div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="fullName">Full Name</label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="age">Age</label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              value={formData.age}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="address">Address</label>
+            <textarea
+              id="address"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              rows="2"
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="phone">Phone Number</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="about">About</label>
+            <textarea
+              id="about"
+              name="about"
+              value={formData.about}
+              onChange={handleChange}
+              rows="4"
+            />
+          </div>
+          
+          <div className="form-actions">
+            <button type="button" onClick={handleCancel} className="cancel-btn">
+              Cancel
+            </button>
+            <button type="submit" className="submit-btn" disabled={loading}>
               {loading ? "Updating..." : "Update Profile"}
             </button>
-
-            <div className="form-footer">
-              <p className="back-link" onClick={goToHome}>
-                Back to Home
-              </p>
-            </div>
-          </form>
-        </div>
-      </div>
+          </div>
+        </form>
+      )}
     </div>
   );
-};
+}
 
 export default EditProfile;
