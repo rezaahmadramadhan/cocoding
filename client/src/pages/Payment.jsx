@@ -160,10 +160,8 @@ const Payment = () => {
       }
 
       setIsLoading(true);
-      console.log('Starting checkout for course ID:', CourseId);
       
       const checkoutPayload = { CourseId: CourseId };
-      console.log('Checkout payload:', checkoutPayload);
       
       const response = await fetch(`https://ip.dhronz.space/orders/checkout`, {
         method: 'POST',
@@ -179,12 +177,10 @@ const Payment = () => {
       
       try {
         responseText = await response.text();
-        console.log('Raw server response:', responseText);
         
         try {
           // Attempt to parse as JSON
           data = JSON.parse(responseText);
-          console.log('Parsed server response:', data);
         } catch (jsonError) {
           console.error('Failed to parse response as JSON:', jsonError);
           throw new Error(`Server returned invalid JSON: ${responseText.substring(0, 100)}...`);

@@ -100,28 +100,6 @@ function Home() {
     };
   }, []);
 
-  // Featured courses data
-  const featuredCourses = [
-    {
-      id: 1,
-      title: "JavaScript Mastery",
-      icon: "💻",
-      description: "Master modern JavaScript from fundamentals to advanced concepts"
-    },
-    {
-      id: 2,
-      title: "React Development",
-      icon: "⚛️",
-      description: "Build powerful web applications with React"
-    },
-    {
-      id: 3,
-      title: "Python for AI",
-      icon: "🤖",
-      description: "Learn Python programming for artificial intelligence applications"
-    }
-  ];
-
   // Testimonials data
   const testimonials = [
     {
@@ -168,38 +146,6 @@ function Home() {
         
         {/* Hero Section */}
         <ParallaxHero />
-        
-        {/* Featured Section */}
-        <section id="featured-section" className="scroll-section featured-section">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={visibleSections.featured ? { opacity: 1 } : {}}
-            transition={{ duration: 0.8 }}
-            className="section-content"
-          >
-            <h2 className="section-title">Featured Learning Paths</h2>
-            <p className="section-subtitle">Curated course collections to build in-demand skills</p>
-            
-            <div className="featured-grid">
-              {featuredCourses.map(course => (
-                <motion.div 
-                  key={course.id} 
-                  className="featured-card"
-                  whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.15)"
-                  }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <div className="featured-icon">{course.icon}</div>
-                  <h3>{course.title}</h3>
-                  <p>{course.description}</p>
-                  <button className="featured-btn">Explore Path</button>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </section>
         
         {/* Courses Section */}
         <section id="courses-section" className="scroll-section">

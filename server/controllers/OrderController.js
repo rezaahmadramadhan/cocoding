@@ -105,8 +105,6 @@ class OrderController {
       // Ambil order ID dari orderId format "ORDER-{id}-{timestamp}"
       const dbOrderId = orderId.split('-')[1];
       
-      console.log(`Notification received. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}`);
-      
       // Cari order di database
       const order = await Order.findOne({
         where: { midtransOrderId: orderId }

@@ -31,13 +31,6 @@ const Login = () => {
     const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     setClientId(googleClientId || "Not found");
     
-    // Log configuration details for debugging
-    console.log("Google OAuth environment check:", {
-      clientIdAvailable: !!googleClientId,
-      clientIdLength: googleClientId?.length || 0,
-      origin: window.location.origin
-    });
-    
     // Set error message from navigation state if available
     if (message) {
       setError(message);
@@ -103,8 +96,6 @@ const Login = () => {
     setError(null);
 
     try {
-      console.log("Google login success response:", credentialResponse);
-      
       // Send Google token to server for verification
       const response = await fetch("https://ip.dhronz.space/google-login", {
         method: "POST",
@@ -144,7 +135,6 @@ const Login = () => {
   // Alternative Google login using hook approach
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log("Google login token response:", tokenResponse);
       try {
         setLoading(true);
         

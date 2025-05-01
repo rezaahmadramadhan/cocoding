@@ -18,8 +18,6 @@ async function authentication(req, res, next) {
         }
 
         const result = verifyToken(tokenValue)
-        console.log(result, "<<< result");
-        
         const user = await User.findByPk(result.id)
 
         if (!user) {

@@ -153,8 +153,6 @@ const Register = () => {
     setError(null);
 
     try {
-      console.log("Google login success response:", credentialResponse);
-
       // Send Google token to server for verification
       const response = await fetch("https://ip.dhronz.space/google-login", {
         method: "POST",
@@ -192,29 +190,6 @@ const Register = () => {
       "Google login failed. Please try again or use email registration."
     );
   };
-
-  //   // Alternative Google login using hook approach
-  //   const googleLogin = useGoogleLogin({
-  //     onSuccess: async (tokenResponse) => {
-  //       console.log("Google login token response:", tokenResponse);
-  //       try {
-  //         setLoading(true);
-
-  //         // Here you would typically exchange the access_token for user info
-  //         // For now, just redirect to home page for testing
-  //         navigate("/");
-  //       } catch (err) {
-  //         console.error("Google login hook error:", err);
-  //         setError("Failed to complete Google login");
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     },
-  //     onError: (error) => {
-  //       console.error("Google login hook error:", error);
-  //       setError("Google login failed");
-  //     }
-  //   });
 
   const goToHome = () => {
     navigate("/");

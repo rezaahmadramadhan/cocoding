@@ -155,7 +155,6 @@ async function authentication(req, res, next) {
         }
 &nbsp;
         const result = verifyToken(tokenValue)
-        console.log(result, "&lt;&lt;&lt; result");
         
         const user = await User.findByPk(result.id)
 &nbsp;

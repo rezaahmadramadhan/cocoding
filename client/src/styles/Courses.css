@@ -5,6 +5,7 @@
   margin: 0 auto;
   background: transparent;
   border-radius: 15px;
+  text-align: center; /* Center all text content */
 }
 
 .courses-container h2 {
@@ -14,7 +15,7 @@
   color: #1a202c; /* Darker text for better contrast */
   font-weight: 700;
   position: relative;
-  display: inline-block;
+  display: block; /* Changed from inline-block to block for full centering */
 }
 
 .courses-container h2:after {
@@ -27,6 +28,166 @@
   height: 4px;
   background: linear-gradient(to right, #61dafb, #4a90e2);
   border-radius: 2px;
+}
+
+/* Search Form Styles */
+.search-container {
+  display: flex;
+  justify-content: center; /* Changed from space-between to center */
+  align-items: center;
+  margin-bottom: 2rem; /* Increased bottom margin */
+  width: 100%;
+}
+
+.search-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 600px; /* Limit the width to make it more centered */
+  margin: 0 auto; /* Center the form */
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  background: white;
+  color: #1a202c;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 3px 15px rgba(74, 144, 226, 0.2);
+}
+
+.search-button, .reset-button {
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  box-shadow: 0 3px 10px rgba(74, 144, 226, 0.25);
+  white-space: nowrap;
+}
+
+.search-button:hover, .reset-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+  background: linear-gradient(135deg, #3182ce, #2b6cb0);
+}
+
+.search-button:active, .reset-button:active {
+  transform: translateY(1px);
+}
+
+.reset-button {
+  background: linear-gradient(135deg, #718096, #4a5568);
+}
+
+.reset-button:hover {
+  background: linear-gradient(135deg, #4a5568, #2d3748);
+}
+
+.per-page-container {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.per-page-container label {
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.per-page-select {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.results-info {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.page-info {
+  font-style: italic;
+  margin-left: 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* Pagination Styles */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.pagination-button {
+  padding: 10px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: #4a5568;
+  min-width: 40px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.pagination-button:hover:not(.disabled):not(.active) {
+  background: #f7fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  color: #3182ce;
+}
+
+.pagination-button.active {
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+  color: white;
+  border-color: #3182ce;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(74, 144, 226, 0.2);
+}
+
+.pagination-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.no-courses {
+  text-align: center;
+  padding: 3rem;
+  background: rgba(247, 250, 252, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  margin: 2rem auto;
+  max-width: 600px;
+  color: #4a5568;
 }
 
 .courses-grid {
@@ -91,13 +252,13 @@
 }
 
 .course-card h3 {
-  color: #1a202c; /* Darker text for better contrast */
+  color: #1a202c;
   margin-top: 0;
   margin-bottom: 0.7rem;
-  font-size: 1.5rem; /* Slightly larger */
+  font-size: 1.5rem; 
   font-weight: 600;
-  letter-spacing: 0.3px; /* Less letter spacing */
-  line-height: 1.3; /* Better line height */
+  letter-spacing: 0.3px;
+  line-height: 1.3; 
   transition: color 0.3s;
 }
 
@@ -199,6 +360,18 @@
   .courses-grid {
     gap: 1.5rem;
   }
+  
+  .search-form {
+    flex-direction: column;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .search-button, .reset-button {
+    width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -212,6 +385,12 @@
   
   .course-card {
     width: 300px;
+  }
+  
+  .pagination-button {
+    padding: 8px 12px;
+    min-width: 35px;
+    font-size: 0.9rem;
   }
 }
 
@@ -227,5 +406,14 @@
   .course-card {
     width: 100%;
     max-width: 320px;
+  }
+  
+  .search-form {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .search-input {
+    width: 100%;
   }
 }
