@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useLocation, Link, useNavigate } from 'react-router';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import '../styles/Payment.css';
 
 const Payment = () => {
@@ -10,10 +10,18 @@ const Payment = () => {
   const [retryCount, setRetryCount] = useState(0);
   const [autoRefresh, setAutoRefresh] = useState(false);
   const [diagnosticInfo, setDiagnosticInfo] = useState(null);
+  const checkoutStarted = useRef(false);
   
   const location = useLocation();
   const navigate = useNavigate();
-  const orderId = location.state?.orderId;
+  
+  // Get orderId from location state or URL query parameters
+  const queryParams = new URLSearchParams(location.search);
+  const midtransStatus = queryParams.get('status');
+  const midtransOrderId = queryParams.get('orderId');
+  
+  // Prefer location state if available, otherwise use query params
+  const orderId = location.state?.orderId || midtransOrderId;
   const CourseId = location.state?.CourseId;
 
   // Format date function to handle different date formats
@@ -120,11 +128,12 @@ const Payment = () => {
       setAutoRefresh(true);
     } 
     // Jika kita memiliki CourseId, kita perlu membuat checkout baru
-    else if (CourseId) {
+    else if (CourseId && !checkoutStarted.current) {
+      checkoutStarted.current = true;
       createCheckout();
     }
     // Jika tidak ada keduanya, redirect ke halaman courses
-    else {
+    else if (!CourseId && !orderId) {
       setError('No order ID or course ID provided');
       setIsLoading(false);
       // Automatically redirect to courses page after 3 seconds
@@ -226,12 +235,16 @@ const Payment = () => {
         throw new Error(data?.message || `Failed to process checkout (Error ${response.status})`);
       }
       
-      // Redirect to Midtrans payment page
-      if (data.payment && data.payment.redirectUrl) {
-        window.location.href = data.payment.redirectUrl;
-      } else if (data.order && data.order.id) {
-        // Update order details and status
-        setOrderDetails(data.order);
+      // Instead of redirecting to Midtrans page, store payment info and update order details
+      if (data.payment && data.order) {
+        // Store order details including payment URL but don't redirect
+        const orderInfo = {
+          ...data.order,
+          paymentUrl: data.payment.redirectUrl,
+          midtransToken: data.payment.token
+        };
+        
+        setOrderDetails(orderInfo);
         setPaymentStatus('pending');
         // Enable auto-refresh for the new order
         setAutoRefresh(true);
@@ -242,6 +255,7 @@ const Payment = () => {
       console.error('Error creating checkout:', err);
       setError(err.message || 'An error occurred during checkout');
       setPaymentStatus('failed');
+      checkoutStarted.current = false;
     } finally {
       setIsLoading(false);
     }
@@ -254,6 +268,7 @@ const Payment = () => {
     setDiagnosticInfo(null);
     
     if (CourseId) {
+      checkoutStarted.current = false;
       createCheckout();
     } else if (orderId) {
       fetchOrderStatus();

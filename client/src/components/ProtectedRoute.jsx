@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from 'react-router';
+import { Navigate, useLocation } from 'react-router-dom';
 
 /**
  * ProtectedRoute - Komponen untuk melindungi rute yang membutuhkan autentikasi
