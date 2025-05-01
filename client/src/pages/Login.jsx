@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParallax } from "react-scroll-parallax";
 import { useNavigate } from "react-router";
+import { GoogleLogin } from "@react-oauth/google";
 import "../styles/Login.css";
 
 const Login = () => {
@@ -48,8 +49,10 @@ const Login = () => {
       const data = await response.json();
 
       // Store token if returned from API
-      if (data.token) {
-        localStorage.setItem("token", data.token);
+      if (data.access_token) {
+        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("userId", data.id);
+        localStorage.setItem("userEmail", data.email);
       }
 
       // Redirect to home page or dashboard
@@ -60,6 +63,46 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Send Google token to server for verification
+      const response = await fetch("https://ip.dhronz.space/google-login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: credentialResponse.credential }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Google login failed");
+      }
+
+      const data = await response.json();
+
+      // Store user information
+      localStorage.setItem("token", data.access_token);
+      localStorage.setItem("userId", data.id);
+      localStorage.setItem("userEmail", data.email);
+
+      // Redirect to home page
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "An error occurred during Google login");
+      console.error("Google login error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLoginError = () => {
+    setError("Google login failed. Please try again or use email login.");
   };
 
   const goToHome = () => {
@@ -107,6 +150,19 @@ const Login = () => {
             <button type="submit" className="login-button" disabled={loading}>
               {loading ? "Logging in..." : "Login"}
             </button>
+
+            <div className="google-login-container">
+              <p className="or-divider">OR</p>
+              <GoogleLogin
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginError}
+                useOneTap
+                theme="filled_blue"
+                text="continue_with"
+                shape="rectangular"
+                locale="en"
+              />
+            </div>
 
             <div className="form-footer">
               <p>

@@ -139,6 +139,48 @@
   box-shadow: none;
 }
 
+/* Google Login Styling */
+.google-login-container {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.or-divider {
+  margin: 1rem 0;
+  color: #718096;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.or-divider:before,
+.or-divider:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: calc(50% - 30px);
+  height: 1px;
+  background-color: #E2E8F0;
+}
+
+.or-divider:before {
+  left: 0;
+}
+
+.or-divider:after {
+  right: 0;
+}
+
+/* Make sure the Google button is centered and full width */
+.google-login-container > div {
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+}
+
 .form-footer {
   margin-top: 1.5rem;
   text-align: center;

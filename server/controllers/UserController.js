@@ -1,5 +1,6 @@
 const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
+const { verifyGoogleToken } = require("../helpers/googleAuth");
 const { User } = require("../models");
 
 class UserController {
@@ -48,6 +49,47 @@ class UserController {
       const access_token = signToken({ id: user.id });
 
       res.status(200).json({ access_token });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async googleLogin(req, res, next) {
+    try {
+      const { token } = req.body;
+      
+      if (!token) {
+        throw { name: "BadRequest", message: "Google token is required" };
+      }
+      
+      // Verify the Google token
+      const googleUserInfo = await verifyGoogleToken(token);
+      
+      // Find existing user or create a new one
+      let user = await User.findOne({ 
+        where: { email: googleUserInfo.email } 
+      });
+      
+      if (!user) {
+        // Create a new user if they don't exist
+        user = await User.create({
+          email: googleUserInfo.email,
+          fullName: googleUserInfo.name,
+          // Generate a random secure password or set null if your model allows it
+          password: Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-10),
+          role: 'customer'
+        });
+      }
+      
+      // Generate JWT token
+      const access_token = signToken({ id: user.id });
+      
+      res.status(200).json({ 
+        access_token,
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName
+      });
     } catch (error) {
       next(error);
     }
