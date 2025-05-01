@@ -113,6 +113,65 @@ class UserController {
       next(error);
     }
   }
+
+  static async getProfile(req, res, next) {
+    try {
+      const userId = req.user.id;
+      
+      const user = await User.findByPk(userId, {
+        attributes: {
+          exclude: ['password']
+        }
+      });
+      
+      if (!user) {
+        throw { name: "NotFound", message: "User not found" };
+      }
+      
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateProfile(req, res, next) {
+    try {
+      const userId = req.user.id;
+      const { fullName, age, address, phone, about } = req.body;
+      
+      const user = await User.findByPk(userId);
+      
+      if (!user) {
+        throw { name: "NotFound", message: "User not found" };
+      }
+      
+      const updateData = {
+        fullName,
+        age: +age,
+        address,
+        phone,
+        about
+      };
+      
+      await User.update(
+        updateData,
+        { where: { id: userId } }
+      );
+      
+      const updatedUser = await User.findByPk(userId, {
+        attributes: {
+          exclude: ['password']
+        }
+      });
+      
+      res.status(200).json({
+        message: "Profile updated successfully",
+        data: updatedUser
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = UserController;

@@ -61,22 +61,10 @@ module.exports = (sequelize, DataTypes) => {
           isInt: {
             msg: "Age must be an integer",
           },
-          min: {
-            args: 0,
-            msg: "Age must be a positive number",
-          },
         },
       },
       address: DataTypes.TEXT,
-      phone: {
-        type: DataTypes.STRING,
-        validate: {
-          is: {
-            args: /^[0-9]+$/,
-            msg: "Phone number must contain only digits",
-          },
-        },
-      },
+      phone: DataTypes.STRING,
       about: DataTypes.TEXT,
     },
     {

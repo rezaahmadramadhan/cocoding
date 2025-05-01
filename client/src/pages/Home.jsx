@@ -6,17 +6,74 @@ import Courses from '../components/Courses'
 import ChatQuiz from '../components/ChatQuiz'
 import '../styles/ChatQuiz.css'
 import '../styles/Home.css'
+import { useNavigate } from 'react-router'
 
 function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
   const [visibleSections, setVisibleSections] = useState({
     featured: false,
     courses: false,
     testimonials: false
   });
 
+  // Check authentication status
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    setIsAuthenticated(!!token);
+  }, []);
+
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
+  };
+
+  const toggleNavbar = () => {
+    setIsNavbarOpen(!isNavbarOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userEmail');
+    setIsAuthenticated(false);
+    setIsNavbarOpen(false);
+    navigate('/');
+  };
+
+  const navigateTo = (path) => {
+    setIsNavbarOpen(false);
+    navigate(path);
+  };
+
+  const handleDeleteAccount = async () => {
+    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await fetch('https://ip.dhronz.space/delete-account', {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('userId');
+          localStorage.removeItem('userEmail');
+          setIsAuthenticated(false);
+          alert('Your account has been successfully deleted');
+          navigate('/');
+        } else {
+          const errorData = await response.json();
+          alert(errorData.message || 'Failed to delete account');
+        }
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        alert('An error occurred while deleting your account');
+      }
+    }
   };
 
   // Observe sections for scroll animations
@@ -93,6 +150,22 @@ function Home() {
   return (
     <ParallaxProvider>
       <div className="app-container">
+        {/* User Navbar */}
+        {isAuthenticated && (
+          <div className="user-navbar">
+            <div className="user-icon" onClick={toggleNavbar}>
+              <span>👤</span>
+              {isNavbarOpen && (
+                <div className="user-dropdown">
+                  <button onClick={() => navigateTo('/edit-profile')}>Edit Account</button>
+                  <button onClick={handleDeleteAccount} className="danger-button">Delete Account</button>
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        
         {/* Hero Section */}
         <ParallaxHero />
         
