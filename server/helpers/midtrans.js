@@ -1,9 +1,9 @@
-const midtransClient = require('midtrans-client');
+const midtransClient = require("midtrans-client");
 
 // Server and client keys - using the sandbox keys for development
-const MIDTRANS_SERVER_KEY = "SB-Mid-server-tbo4qqaOU0_CjUKon4gIh1Wa";
-const MIDTRANS_CLIENT_KEY = "SB-Mid-client-2pThbKNdtgpJ74T8";
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173'; // Fallback URL
+const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY;
+const MIDTRANS_CLIENT_KEY = process.env.MIDTRANS_CLIENT_KEY;
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173"; // Fallback URL
 
 // Konfigurasi client Snap Midtrans
 const createSnapTransaction = async (transaction) => {
@@ -13,35 +13,35 @@ const createSnapTransaction = async (transaction) => {
       // Set to true for production environment
       isProduction: false,
       serverKey: MIDTRANS_SERVER_KEY,
-      clientKey: MIDTRANS_CLIENT_KEY
+      clientKey: MIDTRANS_CLIENT_KEY,
     });
 
     // Parameter untuk transaksi
     const parameter = {
       transaction_details: {
         order_id: transaction.orderId,
-        gross_amount: transaction.amount
+        gross_amount: transaction.amount,
       },
       credit_card: {
-        secure: true
+        secure: true,
       },
       customer_details: {
         first_name: transaction.name,
-        email: transaction.email
+        email: transaction.email,
       },
       item_details: transaction.items,
       callbacks: {
         finish: `${CLIENT_URL}/payment?status=success&orderId=${transaction.orderId}`,
         error: `${CLIENT_URL}/payment?status=error&orderId=${transaction.orderId}`,
-        pending: `${CLIENT_URL}/payment?status=pending&orderId=${transaction.orderId}`
-      }
+        pending: `${CLIENT_URL}/payment?status=pending&orderId=${transaction.orderId}`,
+      },
     };
 
     // Create transaction token
     const transaction_token = await snap.createTransaction(parameter);
     return transaction_token;
   } catch (error) {
-    console.error('Error creating Midtrans transaction:', error);
+    console.error("Error creating Midtrans transaction:", error);
     throw error;
   }
 };
@@ -53,14 +53,14 @@ const checkTransactionStatus = async (orderId) => {
     let core = new midtransClient.CoreApi({
       isProduction: false,
       serverKey: MIDTRANS_SERVER_KEY,
-      clientKey: MIDTRANS_CLIENT_KEY
+      clientKey: MIDTRANS_CLIENT_KEY,
     });
 
     // Get status transaksi dari Midtrans
     const statusResponse = await core.transaction.status(orderId);
     return statusResponse;
   } catch (error) {
-    console.error('Error checking transaction status:', error);
+    console.error("Error checking transaction status:", error);
     throw error;
   }
 };
@@ -72,14 +72,16 @@ const verifyNotification = async (notificationJson) => {
     let core = new midtransClient.CoreApi({
       isProduction: false,
       serverKey: MIDTRANS_SERVER_KEY,
-      clientKey: MIDTRANS_CLIENT_KEY
+      clientKey: MIDTRANS_CLIENT_KEY,
     });
 
     // Verifikasi signature key dari notifikasi
-    const verificationStatus = await core.transaction.notification(notificationJson);
+    const verificationStatus = await core.transaction.notification(
+      notificationJson
+    );
     return verificationStatus;
   } catch (error) {
-    console.error('Error verifying notification:', error);
+    console.error("Error verifying notification:", error);
     throw error;
   }
 };
@@ -87,5 +89,5 @@ const verifyNotification = async (notificationJson) => {
 module.exports = {
   createSnapTransaction,
   checkTransactionStatus,
-  verifyNotification
+  verifyNotification,
 };
