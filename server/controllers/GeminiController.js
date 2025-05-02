@@ -6,7 +6,10 @@ class GeminiController {
       const { topic, difficulty = 'medium', numberOfQuestions = 5 } = req.body;
       
       if (!topic) {
-        throw { name: "BadRequest", message: "Topic is required" };
+        return res.status(400).json({
+          success: false,
+          message: 'Topic is required'
+        });
       }
       
       // Validate difficulty level
