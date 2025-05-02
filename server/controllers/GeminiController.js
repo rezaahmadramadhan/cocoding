@@ -116,7 +116,6 @@ class GeminiController {
           } 
         });
       } catch (error) {
-        console.error("Failed to parse quiz:", error);
         res.status(500).json({
           success: false,
           message: "Failed to generate a properly formatted quiz. Please try again."
