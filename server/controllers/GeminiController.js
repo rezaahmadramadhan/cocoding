@@ -12,6 +12,33 @@ class GeminiController {
         });
       }
       
+      // Check if the topic is related to programming
+      const programmingTopics = [
+        'javascript', 'python', 'java', 'c#', 'c++', 'php', 'ruby', 'swift', 'kotlin', 'rust',
+        'golang', 'typescript', 'react', 'angular', 'vue', 'node.js', 'express', 'django', 'flask',
+        'spring', 'html', 'css', 'sass', 'less', 'sql', 'mongodb', 'postgresql', 'mysql',
+        'database', 'data structure', 'algorithm', 'programming', 'software', 'development',
+        'web development', 'mobile development', 'frontend', 'backend', 'full stack',
+        'devops', 'git', 'docker', 'kubernetes', 'aws', 'azure', 'cloud computing',
+        'machine learning', 'artificial intelligence', 'deep learning', 'cybersecurity',
+        'networking', 'api', 'testing', 'debugging', 'design patterns', 'object-oriented',
+        'functional programming', 'agile', 'scrum', 'code', 'coding', 'compiler', 'interpreter',
+        'framework', 'library', 'package', 'module', 'component', 'rest api', 'graphql',
+        'microservices', 'architecture', 'operating system', 'linux', 'unix', 'windows',
+        'embedded systems', 'blockchain', 'game development', 'unity', 'unreal engine'
+      ];
+      
+      const isProgrammingRelated = programmingTopics.some(progTopic => 
+        topic.toLowerCase().includes(progTopic) || progTopic.includes(topic.toLowerCase())
+      );
+      
+      if (!isProgrammingRelated) {
+        return res.status(400).json({
+          success: false,
+          message: 'Sorry, quizzes can only be generated for programming-related topics.'
+        });
+      }
+      
       // Validate difficulty level
       const validDifficulties = ['easy', 'medium', 'hard', 'expert'];
       const selectedDifficulty = validDifficulties.includes(difficulty.toLowerCase()) 
@@ -121,12 +148,16 @@ class GeminiController {
       
       // Calculate the score and provide detailed feedback
       let correctCount = 0;
-      const results = userAnswers.map((userAnswer, index) => {
-        if (index >= quizData.length) {
+      const results = userAnswers.map((answer, index) => {
+        // Make sure we're accessing the correct question based on the provided answer
+        const questionId = typeof answer.questionId !== 'undefined' ? answer.questionId : index;
+        const userAnswer = typeof answer === 'object' ? answer.answer : answer;
+        
+        if (questionId >= quizData.length || questionId < 0) {
           return { valid: false, message: "Question does not exist" };
         }
         
-        const question = quizData[index];
+        const question = quizData[questionId];
         const isCorrect = userAnswer.toUpperCase() === question.correctAnswer.toUpperCase();
         
         if (isCorrect) {
@@ -134,7 +165,7 @@ class GeminiController {
         }
         
         return {
-          questionId: index,
+          questionId,
           question: question.question,
           userAnswer,
           isCorrect,
