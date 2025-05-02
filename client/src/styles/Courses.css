@@ -236,6 +236,24 @@
   opacity: 1;
 }
 
+.course-image {
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.course-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.course-card:hover .course-image img {
+  transform: scale(1.05);
+}
+
 .card-content {
   position: relative;
   z-index: 1;

@@ -17,32 +17,26 @@ const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get return URL and message from navigation state if available
   const returnUrl = location.state?.returnUrl || "/";
   const message = location.state?.message || null;
 
-  // Check if user is already logged in
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (token) {
-      // User is already logged in, redirect to home page
       navigate("/");
     }
 
-    // Set error message from navigation state if available
     if (message) {
       setError(message);
     }
   }, [navigate, message]);
 
-  // Check password strength whenever password changes
   useEffect(() => {
     if (!password) {
       setPasswordStrength("");
       return;
     }
 
-    // Simple password strength checker
     const hasLetter = /[a-zA-Z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
     const hasSpecial = /[^a-zA-Z0-9]/.test(password);
@@ -63,26 +57,31 @@ const Register = () => {
     }
   }, [password]);
 
-  // Parallax effects for different elements
   const bgParallax = useParallax({
-    speed: -10,
+    speed: -5, 
+    shouldAlwaysCompleteAnimation: true,
+    translateY: [0, 0],
+    rootMargin: { top: 0, right: 0, bottom: 0, left: 0 },
   });
 
   const formParallax = useParallax({
-    scale: [0.9, 1],
+    scale: [0.95, 1], 
     opacity: [0.8, 1],
     easing: "easeInQuad",
+    shouldAlwaysCompleteAnimation: true,
+    translateX: [0, 0], 
   });
 
   const titleParallax = useParallax({
     translateY: [0, -15],
     opacity: [0.7, 1],
+    shouldAlwaysCompleteAnimation: true,
+    translateX: [0, 0], 
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!fullName.trim()) {
       setError("Name is required");
       return;
@@ -92,9 +91,6 @@ const Register = () => {
       setError("Passwords do not match");
       return;
     }
-
-    // Removed the password strength validation
-    // No longer forcing users to have strong passwords
 
     setLoading(true);
     setError(null);
@@ -116,21 +112,17 @@ const Register = () => {
 
       const data = await response.json();
 
-      // Display success message
       setSuccessMessage("Registration successful! Redirecting to login...");
 
-      // After successful registration, automatically log the user in if token provided
       if (data.access_token) {
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("userId", data.id);
         localStorage.setItem("userEmail", data.email);
 
-        // Redirect to return URL or home page after a brief delay
         setTimeout(() => {
           navigate(returnUrl);
         }, 1500);
       } else {
-        // If no token is returned, redirect to login page after a brief delay
         setTimeout(() => {
           navigate("/login", {
             state: {
@@ -153,7 +145,6 @@ const Register = () => {
     setError(null);
 
     try {
-      // Send Google token to server for verification
       const response = await fetch("https://ip.dhronz.space/google-login", {
         method: "POST",
         headers: {
@@ -169,12 +160,10 @@ const Register = () => {
 
       const data = await response.json();
 
-      // Store user information with consistent naming
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("userId", data.id);
       localStorage.setItem("userEmail", data.email);
 
-      // Redirect to return URL or home page
       navigate(returnUrl);
     } catch (err) {
       setError(err.message || "An error occurred during Google login");
@@ -306,9 +295,9 @@ const Register = () => {
                 onSuccess={handleGoogleLoginSuccess}
                 onError={handleGoogleLoginError}
                 useOneTap={false}
-                theme="filled_blue"
+                theme="outline"
                 text="signup_with"
-                shape="rectangular"
+                shape="pill"
                 size="large"
                 width="100%"
                 locale="en"

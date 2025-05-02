@@ -3,8 +3,6 @@
   min-height: 100vh;
   width: 100%;
   position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -128,7 +126,7 @@
 .form-group {
   margin-bottom: 1.8rem;
   text-align: center;
-  width: 100%; /* Added to ensure inputs take full width */
+  width: 100%; 
 }
 
 .form-group label {

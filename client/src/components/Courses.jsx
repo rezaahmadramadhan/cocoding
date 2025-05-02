@@ -20,25 +20,21 @@ const Courses = () => {
     endScroll: 400,
   });
   
-  // Fetch courses when component mounts or when search parameters change
   useEffect(() => {
     const params = {
       search: searchParams.search,
       page: searchParams.page || 1,
       sort: searchParams.sort,
       filter: searchParams.filter
-      // No custom limit, use the server default
     };
     dispatch(fetchCourses(params));
   }, [dispatch, searchParams.search, searchParams.page, searchParams.sort, searchParams.filter]);
 
-  // Handle search form submission
   const handleSearch = (e) => {
     e.preventDefault();
     dispatch(setSearchParams({ search: searchTerm, page: 1 }));
   };
 
-  // Handle page change
   const handlePageChange = (newPage) => {
     console.log('Pagination clicked:', { newPage, currentPage: pagination.page, maxPage: pagination.maxPage });
     if (newPage >= 1 && newPage <= pagination.maxPage) {
@@ -46,7 +42,6 @@ const Courses = () => {
     }
   };
 
-  // Reset search
   const handleResetSearch = () => {
     setSearchTerm('');
     dispatch(resetSearch());
@@ -60,7 +55,6 @@ const Courses = () => {
     return <div className="error">Error: {error}</div>;
   }
 
-  // Tambahkan pemeriksaan courses sebelum mapping
   if (!courses || !Array.isArray(courses)) {
     return <div className="error">No courses available or invalid data format</div>;
   }
@@ -72,13 +66,10 @@ const Courses = () => {
     }).format(price);
   };
 
-  // Create a function for horizontal card animation offset
   const getHorizontalOffset = (index) => {
-    // Create an alternating pattern across rows
-    const rowIndex = Math.floor(index / 3); // Assuming roughly 3 cards per row
+    const rowIndex = Math.floor(index / 3); 
     const colIndex = index % 3;
     
-    // Different offset for each row to create a wave-like pattern
     return rowIndex % 2 === 0 ? 
       Math.sin(colIndex * 0.8) * 15 : 
       Math.cos(colIndex * 0.8) * 15;
@@ -88,12 +79,10 @@ const Courses = () => {
     navigate(`/course/${courseId}`);
   };
 
-  // Generate pagination buttons
   const renderPaginationButtons = () => {
     const buttons = [];
     const { page, maxPage } = pagination;
     
-    // Previous button
     buttons.push(
       <button 
         key="prev"
@@ -105,7 +94,6 @@ const Courses = () => {
       </button>
     );
     
-    // Page numbers
     const startPage = Math.max(1, page - 2);
     const endPage = Math.min(maxPage, page + 2);
     
@@ -121,7 +109,6 @@ const Courses = () => {
       );
     }
     
-    // Next button
     buttons.push(
       <button 
         key="next"
@@ -142,7 +129,6 @@ const Courses = () => {
         <h2 ref={titleParallax.ref}>Available Courses</h2>
       </div>
       
-      {/* Search Form */}
       <div className="search-container">
         <form onSubmit={handleSearch} className="search-form">
           <input
@@ -167,7 +153,6 @@ const Courses = () => {
         </form>
       </div>
 
-      {/* Course Results Count */}
       <div className="results-info">
         Found {pagination.totalData} course{pagination.totalData !== 1 ? 's' : ''}
         {searchParams.search ? ` matching "${searchParams.search}"` : ''}
@@ -176,7 +161,6 @@ const Courses = () => {
         </span>
       </div>
       
-      {/* Courses Grid */}
       <div className="courses-grid">
         {courses.length > 0 ? (
           courses.map((course, index) => (
@@ -192,7 +176,9 @@ const Courses = () => {
               <div className="card-content">
                 <div className="card-header">
                   <h3>{course.title || 'No Title'}</h3>
-                  <div className="course-price">{formatRupiah(course.price || 0)}</div>
+                  <div className="course-image">
+                    <img src={course.courseImg || 'https://via.placeholder.com/150'} alt={course.title} />
+                  </div>
                 </div>
                 <div className="card-body">
                   <p>{course.description || course.desc || 'No Description'}</p>
@@ -215,7 +201,6 @@ const Courses = () => {
         )}
       </div>
       
-      {/* Pagination */}
       {pagination.maxPage > 1 && (
         <div className="pagination-container">
           {renderPaginationButtons()}

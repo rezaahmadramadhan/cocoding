@@ -13,35 +13,29 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Get return URL and message from navigation state if available
   const returnUrl = location.state?.returnUrl || "/";
   const message = location.state?.message || null;
 
-  // Check if user is already logged in
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (token) {
-      // User is already logged in, redirect to home page
       navigate("/");
     }
   }, [navigate]);
 
-  // Get client ID for debugging purposes
   useEffect(() => {
     const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     setClientId(googleClientId || "Not found");
     
-    // Set error message from navigation state if available
     if (message) {
       setError(message);
     }
   }, [message]);
 
-  // Parallax effects for different elements
   const bgParallax = useParallax({
     speed: -5,
     shouldAlwaysCompleteAnimation: true,
-    translateY: [0, 0], // Only allow vertical movement
+    translateY: [0, 0], 
     rootMargin: { top: 0, right: 0, bottom: 0, left: 0 },
   });
 
@@ -50,14 +44,14 @@ const Login = () => {
     opacity: [0.8, 1],
     easing: "easeInQuad",
     shouldAlwaysCompleteAnimation: true,
-    translateX: [0, 0], // Prevent horizontal movement
+    translateX: [0, 0],
   });
 
   const titleParallax = useParallax({
     translateY: [0, -15],
     opacity: [0.7, 1],
     shouldAlwaysCompleteAnimation: true,
-    translateX: [0, 0], // Prevent horizontal movement
+    translateX: [0, 0],
   });
 
   const handleSubmit = async (e) => {
@@ -81,14 +75,12 @@ const Login = () => {
 
       const data = await response.json();
 
-      // Store token with consistent naming
       if (data.access_token) {
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("userId", data.id);
         localStorage.setItem("userEmail", data.email);
       }
 
-      // Redirect to return URL (course page) or default to home page
       navigate(returnUrl);
     } catch (err) {
       setError(err.message || "An error occurred during login");
@@ -103,7 +95,6 @@ const Login = () => {
     setError(null);
 
     try {
-      // Send Google token to server for verification
       const response = await fetch("https://ip.dhronz.space/google-login", {
         method: "POST",
         headers: {
@@ -119,12 +110,10 @@ const Login = () => {
 
       const data = await response.json();
 
-      // Store user information with consistent naming
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("userId", data.id);
       localStorage.setItem("userEmail", data.email);
 
-      // Redirect to return URL or home page
       navigate(returnUrl);
     } catch (err) {
       setError(err.message || "An error occurred during Google login");
@@ -139,24 +128,19 @@ const Login = () => {
     setError("Google login failed. Please try again or use email login.");
   };
 
-  // Alternative Google login using hook approach
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
         setLoading(true);
         
-        // Here you would typically exchange the access_token for user info
-        // For now, just redirect to home page for testing
         navigate("/");
       } catch (err) {
-        console.error("Google login hook error:", err);
         setError("Failed to complete Google login");
       } finally {
         setLoading(false);
       }
     },
     onError: (error) => {
-      console.error("Google login hook error:", error);
       setError("Google login failed");
     }
   });
@@ -222,9 +206,9 @@ const Login = () => {
                 onSuccess={handleGoogleLoginSuccess}
                 onError={handleGoogleLoginError}
                 useOneTap={false}
-                theme="filled_blue"
-                text="continue_with"
-                shape="rectangular"
+                theme="outline"
+                text="signin_with"
+                shape="pill"
                 size="large"
                 width="100%"
                 locale="en"

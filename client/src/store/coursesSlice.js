@@ -10,14 +10,12 @@ export const fetchCourses = createAsyncThunk(
       const { search, page = 1, sort, filter } = params;
       let url = API_URL;
       
-      // Add query parameters
       const queryParams = new URLSearchParams();
       if (search) queryParams.append('search', search);
       if (page) queryParams.append('page', page);
       if (sort) queryParams.append('sort', sort);
       if (filter) queryParams.append('filter', filter);
       
-      // Append query string to URL if we have parameters
       if (queryParams.toString()) {
         url += `?${queryParams.toString()}`;
       }
@@ -69,7 +67,6 @@ const initialState = {
   }
 };
 
-// Create the courses slice
 const coursesSlice = createSlice({
   name: 'courses',
   initialState,

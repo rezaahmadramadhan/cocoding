@@ -15,28 +15,22 @@ const Payment = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Get orderId from location state or URL query parameters
   const queryParams = new URLSearchParams(location.search);
   const midtransStatus = queryParams.get('status');
   const midtransOrderId = queryParams.get('orderId');
   
-  // Prefer location state if available, otherwise use query params
   const orderId = location.state?.orderId || midtransOrderId;
   const CourseId = location.state?.CourseId;
 
-  // Format date function to handle different date formats
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     
-    // Try to parse the date
     const date = new Date(dateString);
     
-    // Check if the date is valid
     if (isNaN(date.getTime())) {
       return 'Invalid Date';
     }
     
-    // Format the date with options
     const options = { 
       year: 'numeric', 
       month: 'long', 
@@ -48,15 +42,12 @@ const Payment = () => {
     return date.toLocaleDateString('en-EN', options);
   };
 
-  // Helper function to get a valid date from order details
   const getOrderDate = (orderDetails) => {
     if (!orderDetails) return null;
     
-    // Try different date fields that might be available in the order
     return orderDetails.orderAt || orderDetails.createdAt || orderDetails.updatedAt || null;
   };
 
-  // Memoized fetchOrderStatus to use in auto-refresh
   const fetchOrderStatus = useCallback(async () => {
     try {
       const token = localStorage.getItem('access_token');
@@ -79,38 +70,32 @@ const Payment = () => {
       const data = await response.json();
       setOrderDetails(data);
       
-      // Set status based on order data
       if (data.status === 'paid' || data.status === 'completed') {
         setPaymentStatus('success');
-        // Stop auto-refresh when payment is successful
         setAutoRefresh(false);
       } else if (data.status === 'failed') {
         setPaymentStatus('failed');
-        // Stop auto-refresh when payment has failed
         setAutoRefresh(false);
       } else {
         setPaymentStatus('pending');
       }
 
-      // Clear any previous errors if the request succeeds
       setError(null);
       setDiagnosticInfo(null);
     } catch (err) {
-      console.error('Error fetching order details:', err);
       setError(err.message || 'An error occurred while fetching order details');
     } finally {
       setIsLoading(false);
     }
   }, [orderId]);
 
-  // Auto-refresh order status for pending payments
   useEffect(() => {
     let intervalId = null;
     
     if (autoRefresh && orderId) {
       intervalId = setInterval(() => {
         fetchOrderStatus();
-      }, 10000); // Check every 10 seconds
+      }, 10000);
     }
     
     return () => {
@@ -121,22 +106,17 @@ const Payment = () => {
   }, [autoRefresh, orderId, fetchOrderStatus]);
 
   useEffect(() => {
-    // Jika kita memiliki orderId, kita langsung memeriksa status order
     if (orderId) {
       fetchOrderStatus();
-      // Enable auto-refresh for pending orders
       setAutoRefresh(true);
     } 
-    // Jika kita memiliki CourseId, kita perlu membuat checkout baru
     else if (CourseId && !checkoutStarted.current) {
       checkoutStarted.current = true;
       createCheckout();
     }
-    // Jika tidak ada keduanya, redirect ke halaman courses
     else if (!CourseId && !orderId) {
       setError('No order ID or course ID provided');
       setIsLoading(false);
-      // Automatically redirect to courses page after 3 seconds
       const redirectTimer = setTimeout(() => {
         navigate('/');
       }, 10000);
@@ -145,7 +125,6 @@ const Payment = () => {
     }
   }, [orderId, CourseId, fetchOrderStatus, navigate]);
 
-  // Fungsi untuk membuat checkout baru
   const createCheckout = async () => {
     try {
       const token = localStorage.getItem('access_token');
@@ -179,16 +158,11 @@ const Payment = () => {
         responseText = await response.text();
         
         try {
-          // Attempt to parse as JSON
           data = JSON.parse(responseText);
         } catch (jsonError) {
-          console.error('Failed to parse response as JSON:', jsonError);
           throw new Error(`Server returned invalid JSON: ${responseText.substring(0, 100)}...`);
         }
       } catch (parseError) {
-        console.error('Failed to get response text:', parseError);
-        
-        // Collect diagnostic information
         const diagnosticData = {
           statusCode: response.status,
           statusText: response.statusText,
@@ -201,9 +175,7 @@ const Payment = () => {
       }
       
       if (!response.ok) {
-        // Handle 401 Unauthorized specifically
         if (response.status === 401) {
-          // Token might be expired or invalid
           localStorage.removeItem('access_token');
           navigate('/login', { 
             state: { 
@@ -214,7 +186,6 @@ const Payment = () => {
           return;
         }
         
-        // Collect diagnostic information for better debugging
         setDiagnosticInfo({
           statusCode: response.status,
           statusText: response.statusText,
@@ -222,18 +193,14 @@ const Payment = () => {
           timestamp: new Date().toISOString()
         });
         
-        // Handle server errors (500)
         if (response.status === 500) {
-          console.error('Server error details:', data);
           throw new Error(`Server error: ${data?.message || 'The payment system is experiencing issues. Please try again later or contact support.'}`);
         }
         
         throw new Error(data?.message || `Failed to process checkout (Error ${response.status})`);
       }
       
-      // Instead of redirecting to Midtrans page, store payment info and update order details
       if (data.payment && data.order) {
-        // Store order details including payment URL but don't redirect
         const orderInfo = {
           ...data.order,
           paymentUrl: data.payment.redirectUrl,
@@ -242,7 +209,6 @@ const Payment = () => {
         
         setOrderDetails(orderInfo);
         setPaymentStatus('pending');
-        // Enable auto-refresh for the new order
         setAutoRefresh(true);
       } else {
         throw new Error('Invalid response format: Missing payment or order information');
@@ -257,7 +223,6 @@ const Payment = () => {
     }
   };
 
-  // Function to retry checkout when it fails
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);
     setError(null);
@@ -271,7 +236,6 @@ const Payment = () => {
     }
   };
 
-  // Function to toggle auto-refresh
   const toggleAutoRefresh = () => {
     setAutoRefresh(prev => !prev);
   };

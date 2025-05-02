@@ -6,7 +6,6 @@ const store = configureStore({
   reducer: {
     courses: coursesReducer,
     courseDetail: courseDetailReducer,
-    // Add other reducers here as needed
   },
 });
 

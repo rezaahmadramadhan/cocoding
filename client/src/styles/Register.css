@@ -1,8 +1,23 @@
-/* Register form styles, extending Login styles */
+html, body {
+  overflow-y: auto; 
+  overflow-x: hidden; 
+  height: 100%; 
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative; 
+}
+
+.login-container {
+  position: relative;
+  width: 100%;
+}
 
 .login-form-container form.login-form {
   max-width: 400px;
-  margin: 0 auto; /* Ensure horizontal centering */
+  margin: 0 auto; 
 }
 
 /* Additional styles for registration form */

@@ -19,7 +19,6 @@ function Home() {
     testimonials: false
   });
 
-  // Check authentication status
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     setIsAuthenticated(!!token);
@@ -76,7 +75,6 @@ function Home() {
     }
   };
 
-  // Observe sections for scroll animations
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -100,7 +98,6 @@ function Home() {
     };
   }, []);
 
-  // Testimonials data
   const testimonials = [
     {
       id: 1,
@@ -128,7 +125,6 @@ function Home() {
   return (
     <ParallaxProvider>
       <div className="app-container">
-        {/* User Navbar */}
         {isAuthenticated && (
           <div className="user-navbar">
             <div className="user-icon" onClick={toggleNavbar}>
@@ -150,10 +146,8 @@ function Home() {
           </div>
         )}
         
-        {/* Hero Section */}
         <ParallaxHero />
         
-        {/* Courses Section */}
         <section id="courses-section" className="scroll-section">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -164,7 +158,6 @@ function Home() {
           </motion.div>
         </section>
         
-        {/* Testimonials Section */}
         <section id="testimonials-section" className="scroll-section testimonials-section">
           <motion.div
             initial={{ opacity: 0 }}
@@ -200,7 +193,6 @@ function Home() {
           </motion.div>
         </section>
         
-        {/* Footer */}
         <footer className="footer">
           <div className="footer-content">
             <div className="footer-section">
@@ -232,7 +224,6 @@ function Home() {
           </div>
         </footer>
         
-        {/* Chat Button */}
         <button 
           className="chat-button" 
           onClick={toggleChat}
@@ -241,7 +232,6 @@ function Home() {
           <span className="chat-icon">💬</span>
         </button>
         
-        {/* Chat Quiz Component */}
         <ChatQuiz isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
       </div>
     </ParallaxProvider>
