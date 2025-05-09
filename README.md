@@ -1,6 +1,6 @@
-# Learning Platform - Individual Project Phase 2
+# COCODING
 
-A full-stack learning platform application with features including course browsing, payments, and AI-assisted learning through Gemini API integration.
+Programming learning platform application with features including course browsing, payments, and AI-assisted learning through Gemini API integration.
 
 ## Table of Contents
 - [Features](#features)
