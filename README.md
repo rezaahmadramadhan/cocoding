@@ -9,6 +9,10 @@ Programming learning platform application with features including course browsin
 - [Getting Started](#getting-started)
 - [API Documentation](#api-documentation)
 
+## ERD Schema
+![erd_schema](https://github.com/user-attachments/assets/44236870-8c4b-42f5-92b4-3bd3894e3420)
+
+
 ## Features
 - User authentication with JWT and Google OAuth
 - Course catalog browsing and searching
