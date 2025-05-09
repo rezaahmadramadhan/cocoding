@@ -51,8 +51,8 @@ Programming learning platform application with features including course browsin
 
 Clone the repository:
 ```bash
-git clone https://github.com/rezaahmadramadhan/IP-REZA.git
-cd IP-REZA
+git clone https://github.com/rezaahmadramadhan/cocoding.git
+cd cocoding
 ```
 
 #### Backend Setup
